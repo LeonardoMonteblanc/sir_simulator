@@ -1,5 +1,8 @@
 extends  Node2D
 
+var agente = preload("res://scenes/agents/Agente.tscn").instantiate()
+
+
 func _ready():
 
 	var covid = Doenca.new(
@@ -12,5 +15,13 @@ func _ready():
 	print(covid.taxa_transmissao)
 	print(covid.duracao_infeccao)
 	
-	var agente = preload("res://scenes/agents/Agente.tscn").instantiate()
 	add_child(agente)
+	
+func _input(event):
+	if event.is_action_pressed("ui_accept"):
+		agente.set_estado(sir_estados.Estado.SUSCETIVEL)
+	if event.is_action_pressed("ui_left"):
+		agente.set_estado(sir_estados.Estado.INFECTADO)
+	if event.is_action_pressed("ui_right"):
+		agente.set_estado(sir_estados.Estado.RECUPERADO)
+		
