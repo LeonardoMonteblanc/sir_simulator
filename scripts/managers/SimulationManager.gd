@@ -6,7 +6,7 @@ var graph_manager
 
 var doenca_dados: DoencaDatabase
 var doenca_atual: Doenca
-
+var infectados_origem = {}
 var pronto := false
 
 func obter_agentes():
@@ -36,6 +36,7 @@ func trocar_doenca(nome: String):
 	resetar()
 
 func resetar():
+	infectados_origem.clear()
 	var agentes = obter_agentes()
 	
 	for a in agentes:
@@ -57,6 +58,7 @@ func inicializar():
 		
 	infection_manager.simulation_manager = self
 	recovery_manager.simulation_manager = self
+	graph_manager.criar_nos(population_manager)
 	
 	pronto = true
 	return true
@@ -70,4 +72,6 @@ func _process(delta):
 	
 	infection_manager.processar_infeccao()
 	recovery_manager.processar_recuperacao(obter_agentes(), delta)
-	graph_manager.detectar_contatos(population_manager)
+	
+	graph_manager.atualizar_nos(population_manager)
+	graph_manager.atualizar_arestas(self)

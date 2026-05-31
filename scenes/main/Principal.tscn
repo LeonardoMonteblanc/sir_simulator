@@ -19,8 +19,16 @@ script = ExtResource("3_hjnbl")
 [node name="SimulacaoManager" type="Node" parent="." unique_id=2111951922]
 script = ExtResource("4_cjf3a")
 
-[node name="GrafoManager" type="Node" parent="." unique_id=1063654915]
-script = ExtResource("6_idbex")
-
 [node name="RecuperacaoManager" type="Node" parent="." unique_id=646701643]
 script = ExtResource("4_rihfc")
+
+[node name="Window" type="Window" parent="." unique_id=1342994560]
+oversampling_override = 1.0
+initial_position = 1
+size = Vector2i(400, 400)
+always_on_top = true
+
+[node name="GraphView" type="Node2D" parent="Window" unique_id=1951513694]
+
+[node name="GrafoManager" type="Node2D" parent="Window/GraphView" unique_id=1512178457]
+script = ExtResource("6_idbex")
