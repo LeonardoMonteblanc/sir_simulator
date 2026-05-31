@@ -5,7 +5,7 @@
 [node name="Agente" type="Node2D" unique_id=635205997]
 script = ExtResource("1_jcwm6")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=726936232]
+[node name="Visual" type="ColorRect" parent="." unique_id=726936232]
 offset_left = -8.0
 offset_top = -8.0
 offset_right = 8.0

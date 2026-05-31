@@ -11,3 +11,6 @@ func _ready():
 	print(covid.nome)
 	print(covid.taxa_transmissao)
 	print(covid.duracao_infeccao)
+	
+	var agente = preload("res://scenes/agents/Agente.tscn").instantiate()
+	add_child(agente)
