@@ -4,7 +4,7 @@ var agente = preload("res://scenes/agents/Agente.tscn").instantiate()
 
 
 func _ready():
-
+	$PopulationManager.criar_agentes()
 	var covid = Doenca.new(
 		"COVID",
 		0.35,
