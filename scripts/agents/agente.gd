@@ -3,6 +3,8 @@ class_name Agente
 
 @onready var sprite: ColorRect = $Visual
 
+const TAMANHO_AGENTE := 16.0
+
 
 var id: int = -1
 var estado: sir_estados.Estado = sir_estados.Estado.SUSCETIVEL
