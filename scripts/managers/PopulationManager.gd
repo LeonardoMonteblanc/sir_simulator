@@ -1,6 +1,4 @@
 extends Node
-
-
 const CENA_AGENTE = preload("res://scenes/agents/Agente.tscn")
 
 var agentes: Array = []
@@ -8,7 +6,7 @@ var proximo_id: int = 0
 var qtd_inicial_infectado: int = Constants.QTD_INFECTADOS_INICIAL
 
 func criar_agentes():
-	for i in range(50):
+	for i in range(Constants.QTD_AGENTES):
 		var agente = CENA_AGENTE.instantiate()
 		agente.inicializar_direcao()
 		

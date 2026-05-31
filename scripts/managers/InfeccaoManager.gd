@@ -1,8 +1,7 @@
 extends Node
 
 var agentes: Array = []
-@onready var SimulationManager = $SimulacaoManager
-
+var simulation_manager
 
 func registrar_agentes(lista_agentes: Array):
 	agentes = lista_agentes
@@ -25,7 +24,7 @@ func processar_infeccao():
 
 
 func tentar_infectar(agente):
-	var beta = SimulationManager.doenca_atual.taxa_transmissao
+	var beta = simulation_manager.doenca_atual.taxa_transmissao
 	
 	if randf() < beta:
 		agente.set_estado(sir_estados.Estado.INFECTADO)
