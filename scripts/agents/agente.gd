@@ -2,6 +2,7 @@ extends Node2D
 class_name Agente
 
 @onready var sprite: ColorRect = $Visual
+@onready var raio_visual: Node2D = $RaioVisual
 
 const TAMANHO_AGENTE := 16.0
 
@@ -60,13 +61,22 @@ func detectar_bordas():
 		position.y = Constants.ALTURA_AREA
 		direcao.y *= -1
 
+# desenha o raio 
+func _draw():
+	draw_circle(Vector2.ZERO, Constants.RAIO_CONTAGIO, Color(1,0,0,0.1))
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	queue_redraw()
+	
 	if direcao == Vector2.ZERO:
 		inicializar_direcao()
-
+	
+	raio_visual.queue_redraw()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	queue_redraw()
 	position += direcao * velocidade * delta
 	detectar_bordas()
