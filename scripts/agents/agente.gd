@@ -38,6 +38,22 @@ func atualizar_visual():
 		sir_estados.Estado.RECUPERADO:
 			sprite.color = Constants.COR_RECUPERADO
 
+# metodo para detectar as bordas
+func detectar_bordas():
+	if position.x <= 0:
+		position.x = 0
+		direcao.x *= -1
+	elif position.x >= Constants.LARGURA_AREA:
+		position.x = Constants.LARGURA_AREA
+		direcao.x *= -1
+	
+	if position.y <= 0:
+		position.y = 0 
+		direcao.y *= -1
+	
+	elif position.y  >= Constants.ALTURA_AREA:
+		position.y = Constants.ALTURA_AREA
+		direcao.y *= -1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -48,3 +64,4 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	position += direcao * velocidade * delta
+	detectar_bordas()
