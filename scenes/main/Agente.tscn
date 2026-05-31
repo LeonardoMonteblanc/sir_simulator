@@ -1,3 +1,13 @@
 [gd_scene format=3 uid="uid://dqocmwkgm40cc"]
 
-[node name="Node2D" type="Node2D" unique_id=635205997]
+[ext_resource type="Script" uid="uid://k2ttee1xtju4" path="res://scripts/agents/agente.gd" id="1_jcwm6"]
+
+[node name="Agente" type="Node2D" unique_id=635205997]
+script = ExtResource("1_jcwm6")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=726936232]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0, 0.52304745, 0.26955476, 1)
