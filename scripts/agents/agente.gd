@@ -12,14 +12,21 @@ var velocidade: float = Constants.VELOCIDADE_AGENTE
 var direcao: Vector2 = Vector2.ZERO
 var tempo_infeccao: float = 0.0
 
-func iniciar_infeccao():
-	tempo_infeccao = 0.0
+
 
 # metodo responsavel por alterar o estado 
 func set_estado(novo_estado: sir_estados.Estado) -> void:
 	estado = novo_estado
 	atualizar_visual()
-	
+
+func iniciar_infeccao():
+	tempo_infeccao = 0.0
+
+func inicializar_direcao():
+	direcao = Vector2(
+		randf_range(-1.0, 1.0),
+		randf_range(-1.0,1.0)
+	).normalized()
 
 # metodo que muda a cor do agente pelo estado
 func atualizar_visual():
@@ -34,7 +41,8 @@ func atualizar_visual():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	if direcao == Vector2.ZERO:
+		inicializar_direcao()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
