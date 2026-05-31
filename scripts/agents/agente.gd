@@ -3,6 +3,7 @@ class_name Agente
 
 var id: int = -1
 var estado: sir_estados.Estado = sir_estados.Estado.SUSCETIVEL
+var velocidade: float = Constants.VELOCIDADE_AGENTE
 
 
 # Called when the node enters the scene tree for the first time.
