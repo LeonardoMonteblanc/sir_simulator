@@ -12,6 +12,8 @@ var velocidade: float = Constants.VELOCIDADE_AGENTE
 var direcao: Vector2 = Vector2.ZERO
 var tempo_infeccao: float = 0.0
 
+func iniciar_infeccao():
+	tempo_infeccao = 0.0
 
 # metodo responsavel por alterar o estado 
 func set_estado(novo_estado: sir_estados.Estado) -> void:
