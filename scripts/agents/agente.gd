@@ -28,6 +28,11 @@ func inicializar_direcao():
 		randf_range(-1.0,1.0)
 	).normalized()
 
+
+#calculo da distancia
+func calcular_distancia(outro) -> float:
+	return position.distance_to(outro.position)
+
 # metodo que muda a cor do agente pelo estado
 func atualizar_visual():
 	match estado:

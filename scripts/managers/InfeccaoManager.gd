@@ -19,7 +19,7 @@ func processar_infeccao():
 			if b.estado != sir_estados.Estado.SUSCETIVEL:
 				continue
 			
-			if a.position.distance_to(b.position) <= Constants.RAIO_CONTAGIO:
+			if a.calcular_distancia(b) <= Constants.RAIO_CONTAGIO:
 				tentar_infectar(b)
 
 
