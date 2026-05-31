@@ -4,10 +4,12 @@ extends  Node2D
 @onready var pop = $PopulacaoManager
 @onready var inf = $InfeccaoManager
 @onready var rec = $RecuperacaoManager
+@onready var graf = $GrafoManager
 
 func _ready():
 	pop.criar_agentes()
 	
+	sim.graph_manager = graf
 	sim.population_manager = pop
 	sim.infection_manager = inf
 	sim.recovery_manager = rec
