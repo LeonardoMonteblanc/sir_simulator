@@ -24,6 +24,26 @@ func set_doenca(nome:String):
 		return
 	doenca_atual = d
 
+func trocar_doenca(nome: String):
+	if doenca_dados == null:
+		return 
+	
+	var nova_doenca = doenca_dados.get_doenca(nome)
+	if nova_doenca == null:
+		return
+	doenca_atual = nova_doenca
+	
+	resetar()
+
+func resetar():
+	var agentes = obter_agentes()
+	
+	for a in agentes:
+		a.set_estado(sir_estados.Estado.SUSCETIVEL)
+		a.tempo_infeccao = 0.0
+	
+	population_manager.set_infectados_inicial()
+
 func inicializar():
 	if doenca_dados == null:
 		return false
