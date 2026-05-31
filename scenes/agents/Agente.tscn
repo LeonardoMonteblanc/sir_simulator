@@ -11,3 +11,5 @@ offset_top = -8.0
 offset_right = 8.0
 offset_bottom = 8.0
 color = Color(0, 0.52304745, 0.26955476, 1)
+
+[node name="RaioVisual" type="Node2D" parent="." unique_id=388343618]
