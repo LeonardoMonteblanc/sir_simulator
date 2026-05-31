@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://2xqa46x1y23d" path="res://scripts/managers/InfeccaoManager.gd" id="3_hjnbl"]
 [ext_resource type="Script" uid="uid://b2jklc6nsyxv8" path="res://scripts/managers/SimulationManager.gd" id="4_cjf3a"]
 [ext_resource type="Script" uid="uid://bp5patgp173bl" path="res://scripts/managers/RecoveryManager.gd" id="4_rihfc"]
+[ext_resource type="Script" uid="uid://cyd1r3lkk8af6" path="res://scripts/graph/GrafoManager.gd" id="6_idbex"]
 
 [node name="Principal" type="Node2D" unique_id=811495099]
 script = ExtResource("1_3g3jk")
@@ -17,6 +18,9 @@ script = ExtResource("3_hjnbl")
 
 [node name="SimulacaoManager" type="Node" parent="." unique_id=2111951922]
 script = ExtResource("4_cjf3a")
+
+[node name="GrafoManager" type="Node" parent="." unique_id=1063654915]
+script = ExtResource("6_idbex")
 
 [node name="RecuperacaoManager" type="Node" parent="." unique_id=646701643]
 script = ExtResource("4_rihfc")

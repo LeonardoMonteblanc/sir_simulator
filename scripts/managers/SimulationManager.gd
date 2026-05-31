@@ -1,8 +1,8 @@
 extends Node
-
 var population_manager
 var infection_manager
 var recovery_manager
+var graph_manager
 
 var doenca_dados: DoencaDatabase
 var doenca_atual: Doenca
@@ -70,3 +70,4 @@ func _process(delta):
 	
 	infection_manager.processar_infeccao()
 	recovery_manager.processar_recuperacao(obter_agentes(), delta)
+	graph_manager.detectar_contatos(population_manager)
