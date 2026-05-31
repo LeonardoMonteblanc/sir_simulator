@@ -5,6 +5,7 @@ const CENA_AGENTE = preload("res://scenes/agents/Agente.tscn")
 
 var agentes: Array = []
 var proximo_id: int = 0
+var qtd_inicial_infectado: int = Constants.QTD_INFECTADOS_INICIAL
 
 func criar_agentes():
 	for i in range(50):
@@ -20,6 +21,21 @@ func criar_agentes():
 		agentes.append(agente)
 		get_tree().current_scene.add_child(agente)
 		print(agente.id)
+	
+	set_infectados_inicial()
+
+func set_infectados_inicial():
+	var indices = []
+	
+	for i in range(Constants.QTD_AGENTES):
+		indices.append(i)
+	
+	indices.shuffle()
+	
+	for j in range(qtd_inicial_infectado):
+		var agente = agentes[indices[j]]
+		agente.set_estado(sir_estados.Estado.INFECTADO)
+		agente.iniciar_infeccao()
 
 func gerar_id_unico() -> int:
 	proximo_id += 1
