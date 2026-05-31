@@ -7,21 +7,21 @@ func registrar_agentes(lista_agentes: Array):
 	agentes = lista_agentes
 
 func processar_infeccao():
-	for i in range(agentes.size()):
-		var a = agentes[i]
-		
+	for a in agentes:		
 		if a.estado != sir_estados.Estado.INFECTADO:
 			continue
 		
-		for j in range(agentes.size()):
-			var b = agentes[j]
-			
+		for b in agentes:
 			if b.estado != sir_estados.Estado.SUSCETIVEL:
 				continue
 			
-			if a.calcular_distancia(b) <= Constants.RAIO_CONTAGIO:
+			if validar_raio(a,b):
 				tentar_infectar(b)
 
+func validar_raio(a,b)-> bool:
+	return a.calcular_distancia(b) <= Constants.RAIO_CONTAGIO
+	
+	
 
 func tentar_infectar(agente):
 	var beta = simulation_manager.doenca_atual.taxa_transmissao
