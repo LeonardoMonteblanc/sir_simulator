@@ -1,6 +1,9 @@
 extends Node2D
 class_name Agente
 
+@onready var sprite: ColorRect = $Visual
+
+
 var id: int = -1
 var estado: sir_estados.Estado = sir_estados.Estado.SUSCETIVEL
 var velocidade: float = Constants.VELOCIDADE_AGENTE
@@ -11,7 +14,19 @@ var tempo_infeccao: float = 0.0
 # metodo responsavel por alterar o estado 
 func set_estado(novo_estado: sir_estados.Estado) -> void:
 	estado = novo_estado
+	atualizar_visual()
 	
+
+# metodo que muda a cor do agente pelo estado
+func atualizar_visual():
+	match estado:
+		sir_estados.Estado.SUSCETIVEL:
+			sprite.color = Constants.COR_SUSCETIVEL
+		sir_estados.Estado.INFECTADO:
+			sprite.color = Constants.COR_INFECTADO
+		sir_estados.Estado.RECUPERADO:
+			sprite.color = Constants.COR_RECUPERADO
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
