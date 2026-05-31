@@ -14,8 +14,8 @@ func _ready():
 	
 	sim.doenca_dados = DoencaDatabase.new()
 	sim.set_doenca("COVID")
-
-	var ok = sim.inicializar()
-	if not ok:
-		push_error("SimulationManager falhou na inicialização")
-		return
+	sim.inicializar()
+	
+func _input(event):
+	if event.is_action_pressed("ui_accept"):
+		sim.trocar_doenca("DENGUE")
