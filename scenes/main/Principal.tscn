@@ -9,14 +9,14 @@
 [node name="Principal" type="Node2D" unique_id=811495099]
 script = ExtResource("1_3g3jk")
 
-[node name="SimulacaoManager" type="Node" parent="." unique_id=2111951922]
-script = ExtResource("4_cjf3a")
-
 [node name="PopulacaoManager" type="Node" parent="." unique_id=1351683733]
 script = ExtResource("2_hs211")
 
 [node name="InfeccaoManager" type="Node" parent="." unique_id=71356445]
 script = ExtResource("3_hjnbl")
+
+[node name="SimulacaoManager" type="Node" parent="." unique_id=2111951922]
+script = ExtResource("4_cjf3a")
 
 [node name="RecuperacaoManager" type="Node" parent="." unique_id=646701643]
 script = ExtResource("4_rihfc")
