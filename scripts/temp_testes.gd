@@ -1,27 +1,14 @@
 extends  Node2D
 
-var agente = preload("res://scenes/agents/Agente.tscn").instantiate()
-
+@onready var sim = $SimulacaoManager
+@onready var pop = $PopulacaoManager
+@onready var inf = $InfeccaoManager
+@onready var rec = $RecuperacaoManager
 
 func _ready():
-	$PopulacaoManager.criar_agentes()
-	var covid = Doenca.new(
-		"COVID",
-		0.35,
-		8.0
-	)
-
-	print(covid.nome)
-	print(covid.taxa_transmissao)
-	print(covid.duracao_infeccao)
+	pop.criar_agentes()
+	sim.population_manager = pop
+	sim.infection_manager = inf
+	sim.recovery_manager = rec
+	sim.inicializar()
 	
-	add_child(agente)
-	
-func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		agente.set_estado(sir_estados.Estado.SUSCETIVEL)
-	if event.is_action_pressed("ui_left"):
-		agente.set_estado(sir_estados.Estado.INFECTADO)
-	if event.is_action_pressed("ui_right"):
-		agente.set_estado(sir_estados.Estado.RECUPERADO)
-		
