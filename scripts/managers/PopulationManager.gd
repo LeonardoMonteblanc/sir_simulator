@@ -8,10 +8,11 @@ var agentes: Array = []
 func criar_agentes():
 	for i in range(50):
 		var agente = CENA_AGENTE.instantiate()
-
+	
+		var margem = Agente.TAMANHO_AGENTE / 2.0
 		agente.position = Vector2(
-			randi_range(0, Constants.LARGURA_AREA),
-			randi_range(0, Constants.ALTURA_AREA)
+			randi_range(margem, Constants.LARGURA_AREA - margem),
+			randi_range(margem, Constants.ALTURA_AREA - margem)
 		)
 		
 		agentes.append(agente)
