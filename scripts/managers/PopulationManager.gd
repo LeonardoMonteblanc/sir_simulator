@@ -9,6 +9,11 @@ func criar_agentes():
 	for i in range(50):
 		var agente = CENA_AGENTE.instantiate()
 
+		agente.position = Vector2(
+			randi_range(0, Constants.LARGURA_AREA),
+			randi_range(0, Constants.ALTURA_AREA)
+		)
+		
 		agentes.append(agente)
 		get_tree().current_scene.add_child(agente)
 
