@@ -7,8 +7,15 @@ extends  Node2D
 
 func _ready():
 	pop.criar_agentes()
+	
 	sim.population_manager = pop
 	sim.infection_manager = inf
 	sim.recovery_manager = rec
-	sim.inicializar()
 	
+	sim.doenca_dados = DoencaDatabase.new()
+	sim.set_doenca("COVID")
+
+	var ok = sim.inicializar()
+	if not ok:
+		push_error("SimulationManager falhou na inicialização")
+		return

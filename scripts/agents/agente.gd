@@ -6,19 +6,21 @@ class_name Agente
 
 const TAMANHO_AGENTE := 16.0
 
-
 var id: int = -1
 var estado: sir_estados.Estado = sir_estados.Estado.SUSCETIVEL
 var velocidade: float = Constants.VELOCIDADE_AGENTE
 var direcao: Vector2 = Vector2.ZERO
 var tempo_infeccao: float = 0.0
 
-
-
 # metodo responsavel por alterar o estado 
 func set_estado(novo_estado: sir_estados.Estado) -> void:
 	estado = novo_estado
 	atualizar_visual()
+	
+	if estado == sir_estados.Estado.INFECTADO:
+		iniciar_infeccao()
+	elif estado == sir_estados.Estado.RECUPERADO:
+		tempo_infeccao = 0.0
 
 func iniciar_infeccao():
 	tempo_infeccao = 0.0
@@ -68,12 +70,11 @@ func _draw():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	randomize()
 	queue_redraw()
 	
 	if direcao == Vector2.ZERO:
 		inicializar_direcao()
-	
-	raio_visual.queue_redraw()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

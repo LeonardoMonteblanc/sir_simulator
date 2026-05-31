@@ -19,8 +19,7 @@ func criar_agentes():
 		
 		agentes.append(agente)
 		get_tree().current_scene.add_child(agente)
-		print(agente.id)
-	
+		
 	set_infectados_inicial()
 
 func set_infectados_inicial():
