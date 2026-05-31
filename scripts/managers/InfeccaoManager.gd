@@ -26,7 +26,10 @@ func validar_raio(a,b)-> bool:
 func tentar_infectar(agente):
 	var beta = simulation_manager.doenca_atual.taxa_transmissao
 	
-	if randf() < beta:
+	var sorteio = randf()
+
+	
+	if sorteio < beta:
 		agente.set_estado(sir_estados.Estado.INFECTADO)
 		agente.iniciar_infeccao()
 		
