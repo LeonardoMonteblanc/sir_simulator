@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://1lqatglu8v3b"]
+
+[ext_resource type="Script" uid="uid://db1nj8e8tnlbn" path="res://scripts/graph/AGraphNode.gd" id="1_pslgb"]
+
+[node name="GraphNode" type="Node2D" unique_id=385695659]
+script = ExtResource("1_pslgb")
+
+[node name="Visual" type="ColorRect" parent="." unique_id=1540650575]
+offset_right = 40.0
+offset_bottom = 40.0
