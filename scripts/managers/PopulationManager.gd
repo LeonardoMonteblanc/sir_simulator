@@ -10,6 +10,7 @@ var qtd_inicial_infectado: int = Constants.QTD_INFECTADOS_INICIAL
 func criar_agentes():
 	for i in range(50):
 		var agente = CENA_AGENTE.instantiate()
+		agente.inicializar_direcao()
 		
 		agente.id = gerar_id_unico()
 		var margem = Agente.TAMANHO_AGENTE / 2.0
