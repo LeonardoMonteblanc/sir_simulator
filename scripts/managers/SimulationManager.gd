@@ -75,3 +75,4 @@ func _process(delta):
 	
 	graph_manager.atualizar_nos(population_manager)
 	graph_manager.atualizar_arestas(self)
+	graph_manager.atualizar_layout(population_manager)

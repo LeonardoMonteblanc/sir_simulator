@@ -7,10 +7,8 @@
 script = ExtResource("1_1kirk")
 
 [node name="Visual" type="TextureRect" parent="." unique_id=489199337]
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 17.0
-offset_bottom = 17.0
+offset_right = 20.0
+offset_bottom = 20.0
 mouse_filter = 2
 texture = ExtResource("2_hxv4a")
 expand_mode = 1
