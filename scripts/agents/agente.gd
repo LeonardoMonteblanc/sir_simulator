@@ -1,5 +1,5 @@
 extends Node2D
-class_name Agente
+class_name Agent
 
 
 @onready var sprite: ColorRect = $Visual # representa o quadrado que simula do agente
