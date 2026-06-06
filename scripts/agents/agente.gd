@@ -1,20 +1,22 @@
 extends Node2D
 class_name Agente
 
-@onready var sprite: ColorRect = $Visual
-@onready var raio_visual: Node2D = $RaioVisual
 
-const TAMANHO_AGENTE := 16.0
+@onready var sprite: ColorRect = $Visual # representa o quadrado que simula do agente
+@onready var raio_visual: Node2D = $RaioVisual # representa o sprite do raio do agente
 
-var id: int = -1
-var estado: sir_estados.Estado = sir_estados.Estado.SUSCETIVEL
-var velocidade: float = Constants.VELOCIDADE_AGENTE
+const TAMANHO_AGENTE := 16.0 # tamanho em pixel do agente
+
+# variaveis iniciais do agente
+var id: int = -1 
+var estado: sir_estados.Estado = sir_estados.Estado.SUSCETIVEL 
+var velocidade: float = Constants.VELOCIDADE_AGENTE 
 var direcao: Vector2 = Vector2.ZERO
 var tempo_infeccao: float = 0.0
 
 # metodo responsavel por alterar o estado 
 func set_estado(novo_estado: sir_estados.Estado) -> void:
-	estado = novo_estado
+	estado = novo_estado 
 	atualizar_visual()
 	
 	if estado == sir_estados.Estado.INFECTADO:
