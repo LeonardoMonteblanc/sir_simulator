@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bburomskxw43r"]
+
+[ext_resource type="Script" uid="uid://bik2euydan0bc" path="res://scripts/simulation_view.gd" id="1_q003x"]
+
+[node name="MainSimulation" type="Node2D" unique_id=988777081]
+script = ExtResource("1_q003x")
+
+[node name="GraphEdit" type="GraphEdit" parent="." unique_id=1816369131]
+offset_right = 40.0
+offset_bottom = 40.0
