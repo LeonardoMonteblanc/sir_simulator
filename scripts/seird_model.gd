@@ -208,14 +208,18 @@ func step() -> Dictionary:
 	
 	prejuizo = (ovos_perdidos_total * preco_ovo) + (qtd_mortos * preco_ave)
 	dia += 1
+	var contagens = _count_states()
 	
 	var resultado = {
 		"dia": dia,
-		"contagens": _count_states(),
+		"suscetiveis": contagens["S"],
+		"infectados": contagens["I"],
+		"recuperados": contagens["R"],
+		"mortos": contagens["D"],
+		"expostos": contagens["E"],
 		"ovos_perdidos_hoje": ovos_perdidos_hoje,
 		"ovos_perdidos_total": ovos_perdidos_total,
-		"prejuizo": prejuizo,
-		"agentes": agentes
+		"prejuizo": prejuizo
 	}
 	
 	step_completed.emit(resultado)
@@ -228,6 +232,20 @@ func _get_agentes_by_state(estado: Estado) -> Array:
 		if ag.estado == estado:
 			encontrados.append(ag)
 	return encontrados
+
+func vaccinate(fracao: float):
+	var candidatos = _get_agentes_by_state(Estado.S)
+	var qtd_vacinar = int(candidatos.size() * fracao)
+	candidatos.shuffle()
+	
+	for i in range(qtd_vacinar):
+		candidatos[i].estado = Estado.R
+
+func isolate_infectious():
+	var infectados = _get_agentes_by_state(Estado.I)
+	for ag in infectados:
+		if adjacencia.has(ag.id):
+			adjacencia[ag.id] = []
 
 # contagem de agentes por estado
 func _count_states() -> Dictionary:
@@ -255,15 +273,14 @@ func _update_disease_progress(ag: Agente):
 		ag.dur_infeccao = rng.randi_range(infect_min, infect_max)
 		ag.dias_estado = 0
 	
-	# mudança de estado de infectado para morto ou recuperado
-	if ag.estado == Estado.I and ag.dias_estado >= ag.dur_infeccao:
+	elif ag.estado == Estado.I and ag.dias_estado >= ag.dur_infeccao:
 		if rng.randf() < delta:
 			ag.estado = Estado.D
 			ag.viva = false
+			qtd_mortos += 1
 		else:
 			ag.estado = Estado.R
 		ag.dias_estado = 0
-	
 	ag.dias_estado += 1
 
 # observa quem são os vizinhos para poder calcular a prob de infecção
@@ -272,7 +289,6 @@ func _get_infection_prob(ag: Agente, ids_infectados: Array) -> float:
 	
 	if vizinhos.is_empty():
 		return 0.0
-	# probabilidade de não ser infectado
 	var prod_nao_infeccao: float = 1.0
 	
 	for viz in vizinhos:
