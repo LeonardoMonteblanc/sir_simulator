@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cay1l4aolfjqw"]
+
+[ext_resource type="Script" uid="uid://c16lrcqvxn6il" path="res://scripts/metrics_view.gd" id="1_ky43c"]
+
+[node name="MetricsView" type="Panel" unique_id=673499773]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ky43c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1350997736]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1442323068]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ContainerGrafico" type="Control" parent="VBoxContainer" unique_id=652818174]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="Line2D" type="Line2D" parent="VBoxContainer/ContainerGrafico" unique_id=207187311]
+unique_name_in_owner = true
