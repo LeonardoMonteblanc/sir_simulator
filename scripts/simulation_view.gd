@@ -21,6 +21,7 @@ var parametros_globais: Dictionary = {"num_agents": 20}
 
 # INICIALIZAÇÃO DA VIEW ---------------------------------------------------
 func _ready():
+	$BtnPasso.pressed.connect(_on_step_pressed)
 	if parametros_globais.size() <=1:
 		parametros_globais = {
 			"seed": 32,
@@ -49,51 +50,52 @@ func _ready():
 	_construir_rede_grafica(malha_adjacencia, coordenadas_nos)
 	
 func _construir_rede_grafica(adj: Dictionary, pos: Dictionary):
-	var lista_entidades_ativas: Array = modelo_epidemiologico.get_agents() if modelo_epidemiologico.has_method("get_agents") else modelo_epidemiologico.agentes
-	for agente_objeto in lista_entidades_ativas:
-		var id_chave: int = agente_objeto.id
-		var estado: int = agente_objeto.estado
-		
+	var lista_agentes = modelo_epidemiologico.agentes
+	for agente_objeto in lista_agentes:
 		var instancia_no_grafico := GraphNode.new()
-		instancia_no_grafico.name = str(id_chave)
-		instancia_no_grafico.title = "Ave " + str(id_chave)
+		instancia_no_grafico.name = str(agente_objeto.id)
+		instancia_no_grafico.title = "Ave " + str(agente_objeto.id)
 		
-		if pos.has(id_chave):
-			instancia_no_grafico.position_offset = pos[id_chave]
-
-		instancia_no_grafico.custom_minimum_size = Vector2(100,60)
+		if pos.has(agente_objeto.id):
+			instancia_no_grafico.position_offset = pos[agente_objeto.id]
+		
 		instancia_no_grafico.set_slot(0, true, 0, Color.WHITE, true, 0, Color.WHITE)
-		instancia_no_grafico.self_modulate = CORES_ESTADOS[estado]
+		instancia_no_grafico.custom_minimum_size = Vector2(100,60)
+		instancia_no_grafico.self_modulate = CORES_ESTADOS[agente_objeto.estado]
 	
 		editor_grafos.add_child(instancia_no_grafico)
 	
+	await get_tree().process_frame
+	
 	for id_origem in adj.keys():
-		var origem_int: int = int(id_origem) if id_origem is String else id_origem
-		
-		if not editor_grafos.has_node((str(id_origem))):
-			continue
-		
+		var id_o = int(id_origem)
 		for aresta in adj[id_origem]:
-			var id_destino: int = aresta["neighbor_id"]
+			var id_d = aresta["neighbor_id"]
 			
-			if editor_grafos.has_node(str(id_destino)) and origem_int < id_destino:
-				editor_grafos.connect_node(str(id_origem), 0, str(id_destino),0)
+			if editor_grafos.has_node(str(id_o)) and editor_grafos.has_node(str(id_d)):
+				editor_grafos.connect_node(str(id_o), 0, str(id_d), 0)
 
 # GATILHOS DE ATUALIZAÇÃO TEMPORAL ---------------------------------------------------
 func _on_step_pressed():
-	var dados_passo_atual: Dictionary= modelo_epidemiologico.step()
+	if not is_instance_valid(modelo_epidemiologico):
+		return
+	
+	var dados_passo_atual: Dictionary = modelo_epidemiologico.step()
 	var lista_agentes: Array = dados_passo_atual["agentes"]
 	
 	for agente_objeto in lista_agentes:
-		var id_agente: int = agente_objeto.id
-		var estado_atual: int = agente_objeto.estado
-		
-		var no_alvo := editor_grafos.get_node(str(id_agente)) as GraphNode
-		
+		var no_alvo := editor_grafos.get_node_or_null(str(agente_objeto.id)) as GraphNode
+				
 		if no_alvo:
-			no_alvo.self_modulate = CORES_ESTADOS[estado_atual]
+			no_alvo.self_modulate = CORES_ESTADOS[agente_objeto.estado]
 	
-	passo_concluido.emit(dados_passo_atual)
+	var dados_interface = {
+		"suscetiveis": dados_passo_atual.get("suscetiveis", 0),
+		"infectados": dados_passo_atual.get("infectados", 0),
+		"prejuizo": dados_passo_atual.get("prejuizo", 0.0)
+	}
+	
+	passo_concluido.emit(dados_interface)
 
 # GERENCIAMENTO E LIMPEZA DE MEMÓRIA ---------------------------------------------------
 func limpar_simulacao():

@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://b8pec1ggx470v"]
+
+[ext_resource type="Script" uid="uid://bik2euydan0bc" path="res://scripts/simulation_view.gd" id="1_j14up"]
+
+[node name="SimulationView" type="Panel" unique_id=1680640300]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_j14up")
+
+[node name="GraphEdit" type="GraphEdit" parent="." unique_id=1444548134]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BtnPasso" type="Button" parent="." unique_id=1052064545]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "passooooo"
