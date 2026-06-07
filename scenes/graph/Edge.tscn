@@ -1,7 +1,0 @@
-[gd_scene format=3 uid="uid://cqt7csv46g810"]
-
-[ext_resource type="Script" uid="uid://d3575568tnru8" path="res://scripts/graph/Edge.gd" id="1_8p43e"]
-
-[node name="Line2D" type="Line2D" unique_id=379298798]
-width = 2.0
-script = ExtResource("1_8p43e")
