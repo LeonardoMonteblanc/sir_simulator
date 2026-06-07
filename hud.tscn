@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://c2321r7gwdtu7"]
+
+[ext_resource type="Script" uid="uid://lj45kq3li0wq" path="res://scripts/hud.gd" id="1_37p78"]
+
+[node name="HUD" type="CanvasLayer" unique_id=1379240923]
+script = ExtResource("1_37p78")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2121095987]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -800.0
+offset_right = -600.0
+offset_bottom = 200.0
+grow_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=71978673]
+layout_mode = 2
+
+[node name="LabelStatus" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1241781347]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="GridMetricas" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1323608259]
+layout_mode = 2
+columns = 2
+
+[node name="LabelSuscetiveis" type="Label" parent="MarginContainer/VBoxContainer/GridMetricas" unique_id=1248019908]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LabelInfectados" type="Label" parent="MarginContainer/VBoxContainer/GridMetricas" unique_id=1547741738]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LabelMortos" type="Label" parent="MarginContainer/VBoxContainer/GridMetricas" unique_id=672423998]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LabelRecuperados" type="Label" parent="MarginContainer/VBoxContainer/GridMetricas" unique_id=1654158387]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=770701546]
+layout_mode = 2
+
+[node name="BtnVacinar" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=585678939]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Vacinar"
+
+[node name="BtnIsolar" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=553601197]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Isolar:"
+
+[node name="BtnEncerrar" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=551053325]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Encerrar simulação"

@@ -11,18 +11,24 @@ config_version=5
 [application]
 
 config/name="ProjetoV2"
-run/main_scene="uid://bk34ptpuc8law"
+run/main_scene="uid://bbkwgoawdj8ip"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+SimConfig="*uid://cgqnh5rau5i7q"
 
 [display]
 
 window/size/viewport_width=800
 window/size/viewport_height=800
 window/subwindows/embed_subwindows=false
+window/per_pixel_transparency/allowed=true
 
 [physics]
 
+2d/run_on_separate_thread=true
 3d/physics_engine="Jolt Physics"
 
 [rendering]
