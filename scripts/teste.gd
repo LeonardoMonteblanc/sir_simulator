@@ -1,54 +1,85 @@
 # scripts/teste.gd
-
 extends MainLoop
 
+# VARIÁVEIS DE CLASSE ---------------------------------------------------
 var modelo: SEIRDModel
 var params: Dictionary
 var passo_atual: int = 0
 var passos_totais: int = 30
 
-func _initialize():
-	print("Iniciando teste de integridade do modelo SEIRD...")
-	print("Agentes totais: 3")
+# FUNÇÃO DE INICIALIZAÇÃO ---------------------------------------------------
+func _initialize() -> void:
+	print("==================================================")
+	print("INICIANDO TESTE DE INTEGRAÇÃO: GRAFO + SEIRD")
+	print("==================================================")
+	
+	# 1. Configuração dos Parâmetros Globais da Simulação
+	params = {
+		"seed": 42,
+		"disease": "Newcastle",
+		"num_agents": 50,
+		"num_females": 35,
+		"vac_coverage": 0.1,
+		"egg_price": 0.50,
+		"bird_price": 25.0
+	}
+	
+	print("População configurada: ", params["num_agents"], " agentes.")
+	print("Layout selecionado para teste: FREE_RANGE")
 	print("---")
 	
-	var adj_teste: Dictionary = {
-		0: [ { "neighbor_id": 1, "weight": 1.0 } ],
-		1: [ { "neighbor_id": 0, "weight": 1.0 }, { "neighbor_id": 2, "weight": 1.0 } ],
-		2: [ { "neighbor_id": 1, "weight": 1.0 } ]
-	}
+	# 2. Instanciação e Execução do Gerador de Grafos
+	var gerador := GraphGenerator.new()
+	var resultado_grafo: Dictionary = gerador.generate(
+		params["num_agents"], 
+		"free_range"
+	)
 	
-	params = {
-		"seed": 32,
-		"disease": "Newcastle",
-		"num_agents": 3,
-		"num_females": 2,
-		"vac_coverage": 0.0
-	}
+	var malha_adjacencia: Dictionary = resultado_grafo["adjacency"]
+	var coordenadas_nos: Dictionary = resultado_grafo["positions"]
 	
+	# Validação rápida de segurança da topologia gerada
+	var soma_graus: int = 0
+	for id_agente in malha_adjacencia.keys():
+		soma_graus += malha_adjacencia[id_agente].size()
+	
+	var grau_medio: float = float(soma_graus) / float(params["num_agents"])
+	print("Topologia gerada com sucesso. Grau médio da rede: ", "%0.2f" % grau_medio)
+	print("---")
+	
+	# 3. Inicialização do Modelo Epidemiológico com a Malha Gerada
 	modelo = SEIRDModel.new()
-	modelo.initialize(params, adj_teste)
+	modelo.initialize(params, malha_adjacencia)
 
+# LAÇO DE EXECUÇÃO DO MAINLOOP ---------------------------------------------------
 func _process(_delta: float) -> bool:
-	# O bloco condicional controla a iteração diária da simulação até o limite estipulado
-	# Por padrão, o MainLoop encerra quando retorna true e continua quando retorna false
 	if passo_atual < passos_totais:
-		var resultado_dia = modelo.step()
+		var resultado_dia: Dictionary = modelo.step()
 		
-		# Validação da integridade do tamanho da população simulada a cada passo temporal
-		var total_agentes_verificado: int = resultado_dia["contagens"]["S"] + resultado_dia["contagens"]["E"] + \
-							   resultado_dia["contagens"]["I"] + resultado_dia["contagens"]["R"] + resultado_dia["contagens"]["D"]
+		# Validação da invariante de conservação populacional
+		var contagem = resultado_dia["contagens"]
+		var total_agentes_verificado: int = (
+			contagem["S"] + 
+			contagem["E"] + 
+			contagem["I"] + 
+			contagem["R"] + 
+			contagem["D"]
+		)
 		
 		if total_agentes_verificado != params["num_agents"]:
-			print("ERRO NO DIA ", resultado_dia["dia"], ": Soma dos estados (", total_agentes_verificado, 
-				  ") difere do total de agentes (", params["num_agents"], ")")
-			return true
-		
+			print(
+				"[FALHA] INCONSISTÊNCIA NO DIA ", resultado_dia["dia"], 
+				": Soma dos compartimentos (", total_agentes_verificado, 
+				") diverge do total de agentes (", params["num_agents"], ")"
+			)
+			return true # Encerra o laço indicando erro
+			
 		passo_atual += 1
-		return false
+		return false # Continua para o próximo dia simulado
 	else:
-		# Finalização limpa do script exibindo os resultados consolidados acumulados
-		# Retorna true para instruir o Godot a desalocar o MainLoop com sucesso
-		print("Teste finalizado com SUCESSO. Nenhuma inconsistência encontrada.")
-		print("Estado final: ", modelo._count_states())
-		return true
+		print("==================================================")
+		print("TESTE FINALIZADO COM SUCESSO")
+		print("Dias simulados sem quebra de invariantes: ", passo_atual)
+		print("Estado epidemiológico final: ", modelo._count_states())
+		print("==================================================")
+		return true # Encerra o script com sucesso
