@@ -1,6 +1,39 @@
 class_name SEIRDModel
 extends RefCounted
 
+
+# DADOS DAS DOENÇAS ---------------------------------------------------
+const DISEASE_PRESETS: Dictionary = {
+	"Newcastle": {
+		"beta": 0.40,
+		"latency_min": 2, "latency_max": 6,
+		"infect_min": 5,  "infect_max": 14,
+		"delta": 0.70,
+		"post_mortem_days": 2
+	},
+	"HPAI H5N1": {
+		"beta": 0.70,
+		"latency_min": 1, "latency_max": 3,
+		"infect_min": 2,  "infect_max": 5,
+		"delta": 0.95,
+		"post_mortem_days": 4
+	},
+	"Marek": {
+		"beta": 0.20,
+		"latency_min": 14, "latency_max": 21,
+		"infect_min": 20,  "infect_max": 60,
+		"delta": 0.75,
+		"post_mortem_days": 0
+	},
+	"Bronquite": {
+		"beta": 0.60,
+		"latency_min": 1, "latency_max": 3,
+		"infect_min": 5,  "infect_max": 10,
+		"delta": 0.15,
+		"post_mortem_days": 0
+	}
+}
+
 # CLASSE INTERNA: AGENTE ---------------------------------------------------
 class Agente:
 	var id: int
@@ -257,36 +290,3 @@ func _get_infection_prob(ag: Agente, ids_infectados: Array) -> float:
 		if eh_infectado:
 			prod_nao_infeccao *= (1.0 - beta * peso)
 	return 1.0 - prod_nao_infeccao
-
-
-# DADOS DAS DOENÇAS ---------------------------------------------------
-const DISEASE_PRESETS: Dictionary = {
-	"Newcastle": {
-		"beta": 0.40,
-		"latency_min": 2, "latency_max": 6,
-		"infect_min": 5,  "infect_max": 14,
-		"delta": 0.70,
-		"post_mortem_days": 2
-	},
-	"HPAI H5N1": {
-		"beta": 0.70,
-		"latency_min": 1, "latency_max": 3,
-		"infect_min": 2,  "infect_max": 5,
-		"delta": 0.95,
-		"post_mortem_days": 4
-	},
-	"Marek": {
-		"beta": 0.20,
-		"latency_min": 14, "latency_max": 21,
-		"infect_min": 20,  "infect_max": 60,
-		"delta": 0.75,
-		"post_mortem_days": 0
-	},
-	"Bronquite": {
-		"beta": 0.60,
-		"latency_min": 1, "latency_max": 3,
-		"infect_min": 5,  "infect_max": 10,
-		"delta": 0.15,
-		"post_mortem_days": 0
-	}
-}
