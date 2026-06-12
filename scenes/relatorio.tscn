@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://xwaf58mexhn3"]
+
+[ext_resource type="Script" uid="uid://cenvpwtkv3boi" path="res://scripts/relatorio.gd" id="1_relatorio"]
+
+[node name="Relatorio" type="Control" unique_id=19435318]
+self_modulate = Color(0, 0, 0, 0.7)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_relatorio")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=278328757]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="TopMetrics" type="HBoxContainer" parent="VBoxContainer" unique_id=571059659]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="PanelMortos" type="PanelContainer" parent="VBoxContainer/TopMetrics" unique_id=1778317192]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelMortos" type="Label" parent="VBoxContainer/TopMetrics/PanelMortos" unique_id=103445877]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+text = "Mortos: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelTaxaMortalidade" type="PanelContainer" parent="VBoxContainer/TopMetrics" unique_id=2082050422]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelTaxaMortalidade" type="Label" parent="VBoxContainer/TopMetrics/PanelTaxaMortalidade" unique_id=1653769834]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+text = "Taxa: 0%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelOvosPerdidos" type="PanelContainer" parent="VBoxContainer/TopMetrics" unique_id=2084313257]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelOvosPerdidos" type="Label" parent="VBoxContainer/TopMetrics/PanelOvosPerdidos" unique_id=1291204276]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+text = "Ovos: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelPrejuizo" type="PanelContainer" parent="VBoxContainer/TopMetrics" unique_id=1836625373]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelPrejuizo" type="Label" parent="VBoxContainer/TopMetrics/PanelPrejuizo" unique_id=1390002875]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+text = "Prejuízo: R$ 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=600858258]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GraphContainer" type="Control" parent="VBoxContainer/CenterContainer" unique_id=1062607423]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(800, 500)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TimelineEvents" type="VBoxContainer" parent="VBoxContainer/CenterContainer" unique_id=1441972157]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="LabelPacienteZero" type="Label" parent="VBoxContainer/CenterContainer/TimelineEvents" unique_id=395254004]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Paciente zero: dia 0"
+
+[node name="LabelPico" type="Label" parent="VBoxContainer/CenterContainer/TimelineEvents" unique_id=556384787]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pico: dia 0 (0 infectados)"
+
+[node name="LabelUltimaMorte" type="Label" parent="VBoxContainer/CenterContainer/TimelineEvents" unique_id=631335775]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Última morte: dia -1"
+
+[node name="LabelFinal" type="Label" parent="VBoxContainer" unique_id=1289274529]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Em X dias, você teria perdido Y aves e Z dúzias de ovos, totalizando R$ W"
+horizontal_alignment = 1
+
+[node name="BtnFechar" type="Button" parent="VBoxContainer" unique_id=1509684134]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Fechar"

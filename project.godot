@@ -21,10 +21,23 @@ SimConfig="*uid://cgqnh5rau5i7q"
 
 [display]
 
-window/size/viewport_width=800
-window/size/viewport_height=800
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=3
 window/subwindows/embed_subwindows=false
 window/per_pixel_transparency/allowed=true
+
+[gui]
+
+theme/custom_font="uid://dsnd2cppfu0uw"
+
+[importer_defaults]
+
+texture={
+&"detect_3d/compress_to": 0,
+&"editor/scale_with_editor_scale": true,
+&"process/hdr_as_srgb": true
+}
 
 [physics]
 

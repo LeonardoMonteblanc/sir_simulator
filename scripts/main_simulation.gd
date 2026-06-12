@@ -1,28 +1,35 @@
 # res://scripts/main_simulation.gd
 extends Control
 
-@onready var view_simulacao = $HBoxContainer/SimulationView
-@onready var hud_interface = $HUD
-@onready var view_metricas = $HBoxContainer/MetricsView
-@onready var relatorio_dialog: AcceptDialog = $RelatorioDialog
-
+@onready var view_simulacao = $ColorRect/SimulationView/SimulationView
+@onready var hud_interface = $ColorRect/HUD
+@onready var view_metricas = $ColorRect/HUD/GridMetricas/GridContainer2/HBoxContainer/b
 var parametros_globais: Dictionary = {}
-var modelo_epidemiologico: SEIRDModel
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		get_tree().quit()
 
 func _ready() -> void:
 	if parametros_globais.size() <=1:
 		parametros_globais = SimConfig.params
 		
-	if not modelo_epidemiologico:
-		modelo_epidemiologico = SEIRDModel.new()
-		
 	view_simulacao.passo_concluido.connect(_distribuir_dados)
-	hud_interface.solicitar_intervencao.connect(_processar_intervencao)
-	hud_interface.encerrar_simulacao_solicitado.connect(_exibir_relatorio_final)
+	#view_simulacao.surto_encerrado.connect(_exibir_relatorio_final)
+	#hud_interface.solicitar_intervencao.connect(_processar_intervencao)
+	#hud_interface.encerrar_simulacao_solicitado.connect(_exibir_relatorio_final)
 	
 func _distribuir_dados(dados: Dictionary) -> void:
 	hud_interface.atualizar_interface(dados)
-	view_metricas.adicionar_ponto_grafico(dados)
+	var total_aves = view_simulacao.modelo_epidemiologico.agentes.size()
+	var contagens = {
+		"S": dados.get("suscetiveis", 0),
+		"E": dados.get("expostos", 0),
+		"I": dados.get("infectados", 0),
+		"R": dados.get("recuperados", 0),
+		"D": dados.get("mortos", 0)
+	}
+	#view_metricas.adicionar_ponto_grafico(contagens, total_aves)
 	
 
 func _processar_intervencao(tipo: String) -> void:
@@ -40,16 +47,8 @@ func _processar_intervencao(tipo: String) -> void:
 func _exibir_relatorio_final():
 	get_tree().paused = true
 	
-	var total_aves = modelo_epidemiologico.agentes.size()
-	var mortes = modelo_epidemiologico.qtd_mortos
-	var prejuizo = modelo_epidemiologico.prejuizo
-	var pico = modelo_epidemiologico.dia_pico_infectados
-	
-	var texto = "--- RELATÓRIO FINAL ---\n"
-	texto += "Total de aves: %d\n" % total_aves
-	texto += "Total de óbitos: %d\n" % mortes
-	texto += "Dia do pico: %d\n" % pico
-	texto += "Prejuízo: R$ %.2f\n" % prejuizo
-	
-	$RelatorioDialog.dialog_text = texto
-	$RelatorioDialog.popup_centered()
+	var summary = view_simulacao.modelo_epidemiologico.get_summary()
+	var relatorio = load("res://scenes/relatorio.tscn").instantiate()
+	add_child(relatorio)
+	#relatorio.popular(summary, view_metricas.historico)
+	view_simulacao.get_node("BtnPasso").disabled = true
