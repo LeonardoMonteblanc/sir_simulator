@@ -2,18 +2,20 @@ extends Control
 
 # CONSTANTES DE INTERFACE ---------------------------------------------------
 const CORES_ESTADOS: Dictionary = {
-	0: Color.GREEN, # suscetivel (S)
-	1: Color.YELLOW, # exposto (E)
-	2: Color.RED, # infectado (I)
-	3: Color.BLUE, # recuperado (R)
-	4: Color.BLACK, # morto (D)
+	SEIRDModel.Estado.S: Color(0.18,0.54,0.31),
+	SEIRDModel.Estado.E: Color(0.88,0.56,0.13),
+	SEIRDModel.Estado.I: Color(0.75, 0.19, 0.13, 1.0),
+	SEIRDModel.Estado.R: Color(0.13,0.33,0.67),
+	SEIRDModel.Estado.D: Color(0.33,0.33,0.33),
 }
 
 # REFERÊNCIAS DOS NÓS DA CENA ---------------------------------------------------
 @onready var editor_grafos: GraphEdit = $GraphEdit
+@onready var botao_passo: Button = $BtnPasso
 
 # SINAIS CUSTOMIZADOS ---------------------------------------------------
 signal passo_concluido(dados_dia: Dictionary)
+signal surto_encerrado
 
 # VARIÁVEIS DE CONTROLE DA SIMULAÇÃO ---------------------------------------------------
 var modelo_epidemiologico: SEIRDModel
@@ -21,7 +23,7 @@ var parametros_globais: Dictionary = {}
 
 # INICIALIZAÇÃO DA VIEW ---------------------------------------------------
 func _ready():
-	$BtnPasso.pressed.connect(_on_step_pressed)
+	botao_passo.pressed.connect(_on_step_pressed)
 	parametros_globais = SimConfig.params
 	limpar_simulacao()
 	
@@ -53,7 +55,7 @@ func _construir_rede_grafica(adj: Dictionary, pos: Dictionary):
 		no_agente.name = id_str
 		no_agente.title = "Ave " + id_str
 		no_agente.position_offset = pos.get(agente_obj.id, Vector2((agente_obj.id % 5) * 150, (agente_obj.id / 5) * 100))
-		no_agente.custom_minimum_size = Vector2(100, 60)
+		no_agente.custom_minimum_size = Vector2(80, 50)
 		no_agente.self_modulate = CORES_ESTADOS.get(agente_obj.estado, Color.WHITE)
 		
 		# 2. Adiciona um nó filho 'Control' para criar o slot (índice 0)
@@ -67,7 +69,7 @@ func _construir_rede_grafica(adj: Dictionary, pos: Dictionary):
 		
 		# 4. Configura o slot no índice 0, que corresponde ao 'Control' recem-adicionado
 		#    Parâmetros: (slot_index, enable_left, type_left, color_left, enable_right, type_right, color_right)
-		no_agente.set_slot(0, true, 0, Color.WHITE, true, 0, Color.WHITE)
+		no_agente.set_slot(0, true, 0, Color.WHITE, true, 1, Color.WHITE)
 		
 		# Armazena a referência
 		nos_por_id[agente_obj.id] = no_agente
@@ -87,7 +89,7 @@ func _construir_rede_grafica(adj: Dictionary, pos: Dictionary):
 					if node_o.get_output_port_count() > 0 and node_d.get_input_port_count() > 0:
 						if not editor_grafos.is_node_connected(str(id_o), 0, str(id_d), 0):
 							editor_grafos.connect_node(str(id_o), 0, str(id_d), 0)
-
+	editor_grafos.arrange_nodes()
 # GATILHOS DE ATUALIZAÇÃO TEMPORAL ---------------------------------------------------
 func _on_step_pressed():
 	if not is_instance_valid(modelo_epidemiologico):
@@ -101,8 +103,11 @@ func _on_step_pressed():
 				
 		if no_alvo:
 			no_alvo.self_modulate = CORES_ESTADOS[agente_objeto.estado]
-			
 	passo_concluido.emit(dados_passo_atual)
+	
+	if modelo_epidemiologico._check_outbreak_over():
+		botao_passo.disabled = true
+		surto_encerrado.emit()
 
 func renderizar_estado_atual():
 	for agente in modelo_epidemiologico.agentes:

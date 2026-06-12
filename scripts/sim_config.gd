@@ -3,7 +3,7 @@ extends Node
 var params: Dictionary = {
 	"seed": 32,
 	"disease": "Newcastle",
-	"num_agents": 20,
+	"num_agents": 10,
 	"num_females": 15,
 	"vac_coverage": 0.1,
 	"egg_price": 0.5,

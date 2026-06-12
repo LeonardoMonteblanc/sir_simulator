@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://b8pec1ggx470v"]
+
+[ext_resource type="Script" uid="uid://bik2euydan0bc" path="res://scripts/simulation_view.gd" id="1_j14up"]
+[ext_resource type="Texture2D" uid="uid://cihai1folp8mq" path="res://assets/sprites/fast-forward.png" id="2_yd6oq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgiij"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[node name="Control" type="Control" unique_id=268301110]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SimulationView" type="Panel" parent="." unique_id=2107202372]
+layout_mode = 0
+script = ExtResource("1_j14up")
+
+[node name="GraphEdit" type="GraphEdit" parent="SimulationView" unique_id=1444548134]
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 700.0
+scroll_offset = Vector2(-233, -117)
+panning_scheme = 1
+right_disconnects = true
+show_grid_buttons = false
+
+[node name="BtnPasso" type="Button" parent="SimulationView" unique_id=1628851604]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 0
+offset_left = 1138.0
+offset_top = 785.0
+offset_right = 1377.0
+offset_bottom = 832.0
+scale = Vector2(1, 0.9309045)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_dgiij")
+icon = ExtResource("2_yd6oq")
+autowrap_trim_flags = 192
+icon_alignment = 1
+expand_icon = true

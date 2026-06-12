@@ -3,7 +3,7 @@ extends RefCounted
 
 # CONSTANTES DE CONFIGURAÇÃO ---------------------------------------------------
 const LARGURA_GRID: float = 1000.0
-const ALTURA_GRID: float = 1000.0
+const ALTURA_GRID: float = 700.0
 const RAIO_CORTE_PADRAO: float = 250.0
 
 # funcao que gera a malha e as posições do grafo
@@ -14,7 +14,9 @@ func generate(num_nodes: int, layout: String) -> Dictionary:
 	for i in range(num_nodes):
 		malha_adjacencia[i] = []
 		coordenadas_nos[i] = Vector2.ZERO
-		
+	
+	print(malha_adjacencia)
+	
 	var rng:= RandomNumberGenerator.new()
 	rng.randomize()
 	
@@ -28,6 +30,7 @@ func generate(num_nodes: int, layout: String) -> Dictionary:
 	
 	_garantir_conectividade(num_nodes, malha_adjacencia, coordenadas_nos)
 	
+	print(malha_adjacencia)
 	return {
 		"adjacency": malha_adjacencia,
 		"positions": coordenadas_nos
@@ -41,10 +44,10 @@ func _generate_single_pole(n: int, adj: Dictionary, pos: Dictionary):
 		pos[i] = Vector2(i * espacamento, ALTURA_GRID/2.0)
 		
 		if i > 0:
-			adj[i].append({"neighbor_id": i-1, "weight":1.0})
+			adj[i].append({"neighbor_id": i-1})
 		
 		if i < n-1:
-			adj[i].append({"neighbor_id": i+1, "weight": 1.0})
+			adj[i].append({"neighbor_id": i+1})
 
 # Constrói dois clusters densos com conexões pontuais de peso reduzido entre eles
 func _generate_two_poles(n: int, adj: Dictionary, pos: Dictionary, rng: RandomNumberGenerator):
@@ -67,8 +70,8 @@ func _generate_two_poles(n: int, adj: Dictionary, pos: Dictionary, rng: RandomNu
 			if mesmos_polos:
 				var dist = pos[i].distance_to(pos[j])
 				if dist < RAIO_CORTE_PADRAO:
-					adj[i].append({"neighbor_id": j, "weight": 1.0})
-					adj[j].append({"neighbor_id": i, "weight": 1.0})
+					adj[i].append({"neighbor_id": j})
+					adj[j].append({"neighbor_id": i})
 	
 	var pontes = rng.randi_range(2, 3)
 	
@@ -89,8 +92,8 @@ func _generate_free_range(n: int, adj: Dictionary, pos: Dictionary, rng: RandomN
 			
 			if dist < RAIO_CORTE_PADRAO and dist > 0.0:
 				var peso_calculado = clampf(RAIO_CORTE_PADRAO / dist, 0.0, 1.0)
-				adj[i].append({"neighbor_id": j, "weight": peso_calculado})
-				adj[j].append({"neighbor_id": i, "weight": peso_calculado})
+				adj[i].append({"neighbor_id": j})
+				adj[j].append({"neighbor_id": i})
 
 # VALIDAÇÃO DE CONECTIVIDADE ---------------------------------------------------
 func _garantir_conectividade(n: int, adj: Dictionary, pos: Dictionary):
@@ -111,5 +114,5 @@ func _garantir_conectividade(n: int, adj: Dictionary, pos: Dictionary):
 				var peso_conexo = 1.0
 				if menor_distancia > 0.0:
 					peso_conexo = clampf (RAIO_CORTE_PADRAO / menor_distancia, 0.0, 1.0)
-					adj[i].append({"neighbor_id": no_proximo, "weight": peso_conexo})
-					adj[no_proximo].append({"neighbor_id": i, "weight": peso_conexo})
+					adj[i].append({"neighbor_id": no_proximo})
+					adj[no_proximo].append({"neighbor_id": i})
