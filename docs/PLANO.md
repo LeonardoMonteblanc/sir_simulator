@@ -40,33 +40,59 @@ Objetivo duplo:
 
 ## Estrutura de Diretorios Proposta
 
+Estrutura proposta (FINAL = descrita em `docs/ARCHITECTURE.md`):
+- Core scripts permanecem em `scripts/` (preservar UIDs das cenas)
+- Features em `scripts/core_extensions/<feature>/`
+- Sem sub-diretorios `core/` ou `scenes/features/` reais (sao apenas scaffolding)
+
 ```
 res://
 scripts/
-  core/                          # BASE - NUNCA quebrar estes
-    seird_model.gd
-    graph_generator.gd
-    simulation_view.gd
-    main_simulation.gd
-    sim_config.gd
-    hud.gd
-    metrics_view.gd
+  # CORE - logica existente preservada, nao foi movida
+  seird_model.gd
+  graph_generator.gd
+  simulation_view.gd
+  main_simulation.gd
+  sim_config.gd
+  hud.gd
+  metrics_view.gd
 
   core_extensions/               # FEATURES ISOLADAS - adicionaveis
-    auto_simulation/
-    manual_infection/
-    mode_switcher/
-    graph_algorithms/
-      bfs_visualizer.gd
-      dfs_visualizer.gd
-      dijkstra_visualizer.gd
-      graph_control_panel.gd
-    play_pause_stop/
+    auto_simulation/             # F2
+      auto_simulation_controller.gd
+      control_panel.gd
+      control_panel.tscn
+    manual_infection/            # F3
+      infection_selector.gd
+      infection_selector.tscn
+    graph_algorithms/            # F5, F6, F7, F8
+      graph_registry.gd          #   F5
+      graph_control_panel.gd     #   F5
+      graph_control_panel.tscn   #   F5
+      bfs_runner.gd              #   F6
+      bfs_visualizer.gd          #   F6
+      dfs_runner.gd              #   F7
+      dfs_visualizer.gd          #   F7
+      dijkstra_runner.gd         #   F8
+      dijkstra_visualizer.gd     #   F8
+
+  utils/                         # testes headless (NAO parte da app)
+    validate_*.gd
 
 scenes/
-  core/                          # cenas base (renomeadas)
-  features/                      # cenas de features isoladas
+  mainSimulation.tscn            # cena principal
+  simulationView.tscn
+  hud.tscn
+  metricsView.tscn
+  relatorio.tscn
 ```
+
+NOTA: A Fase 4 (mode switcher / modo dual) e os diretorios `mode_switcher/` e
+`play_pause_stop/` planejados originalmente NAO foram implementados — os algoritmos
+funcionam sem troca de aba. Ver `docs/CHANGELOG.md` (secao "Roadmap completo")
+para justificativa. Os diretorios `scripts/core_extensions/mode_switcher/` e
+`scripts/core_extensions/play_pause_stop/` existem apenas como `.gitkeep` (vazios)
+para preservar o espaco no git; podem ser apagados sem efeito.
 
 ---
 
@@ -188,21 +214,27 @@ Bugs a corrigir (lista completa abaixo):
 
 ---
 
-## Mapa de Dependencias
+## Mapa de Dependencias (REAL - implementada)
 
 ```
-Fase 1 (bugs) ← BASE ESTAVEL
-   │
-   ├──→ Fase 2 (auto-sim + controles) ─→ Fase 5 (reset grafo)
-   │                                          │
-   │                                          ├──→ Fase 6 (BFS)
-   │                                          ├──→ Fase 7 (DFS)
-   │                                          └──→ Fase 8 (Dijkstra)
-   │
-   ├──→ Fase 3 (manual infection) [independente]
-   │
-   └──→ Fase 4 (modo dual) ──→ Fase 5
+Fase 1 (bugs) <- BASE ESTAVEL
+   |
+   +--> Fase 2 (auto-sim + controles) <-+
+   |                                    |
+   +--> Fase 3 (manual infection) [independente]
+   |
+   +--> Fase 5 (graph registry + reset) <-+
+                                         |
+                                         +--> Fase 6 (BFS)
+                                         +--> Fase 7 (DFS)
+                                         +--> Fase 8 (Dijkstra)
+
+OBS: Fase 4 (modo dual) NAO implementada - ver nota de estrutura.
 ```
+
+OBS2: o grafo original previa dependência "Fase 6/7/8 dependem de Fase 4 + 5" mas a Fase 4
+foi desconsiderada na execução real porque os botões dos algoritmos funcionam sem troca
+de aba (a UI foi adaptada para ter todos botoes visíveis lado a lado).
 
 ---
 

@@ -77,7 +77,6 @@ scripts/utils/
   validate_bfs.gd            # F6 - 4 cenarios de BFS
   validate_dfs.gd            # F7 - 3 cenarios de DFS
   validate_dijkstra.gd       # F8 - 3 cenarios de Dijkstra
-  validate_seird.gd          # legado da F1 (sub-cenário do validate_seird_full)
 ```
 
 ---
