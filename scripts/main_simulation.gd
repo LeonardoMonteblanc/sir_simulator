@@ -16,6 +16,8 @@ const BFSRunnerScript = preload("res://scripts/core_extensions/graph_algorithms/
 const BFSVisualizerScript = preload("res://scripts/core_extensions/graph_algorithms/bfs_visualizer.gd")
 const DFSRunnerScript = preload("res://scripts/core_extensions/graph_algorithms/dfs_runner.gd")
 const DFSVisualizerScript = preload("res://scripts/core_extensions/graph_algorithms/dfs_visualizer.gd")
+const DijkstraRunnerScript = preload("res://scripts/core_extensions/graph_algorithms/dijkstra_runner.gd")
+const DijkstraVisualizerScript = preload("res://scripts/core_extensions/graph_algorithms/dijkstra_visualizer.gd")
 
 @onready var view_simulacao: Control = $ColorRect/SimulationView/SimulationView
 @onready var hud_interface: Control = $ColorRect/HUD
@@ -33,6 +35,9 @@ var _btn_bfs: Button = null
 var _btn_bfs_cancel: Button = null
 var _dfs_visualizer: Node = null
 var _btn_dfs: Button = null
+var _dijkstra_visualizer: Node = null
+var _btn_dijkstra: Button = null
+var _lbl_dijkstra_resultado: Label = null
 
 var parametros_globais: Dictionary = {}
 
@@ -147,6 +152,7 @@ func _montar_dfs() -> void:
 	add_child(_dfs_visualizer)
 	if _dfs_visualizer.has_method("set_registry"):
 		_dfs_visualizer.set_registry(_graph_registry)
+	_montar_dijkstra()
 	_btn_dfs = Button.new()
 	_btn_dfs.text = "DFS a partir do paciente zero"
 	_btn_dfs.name = "BtnDFS"
@@ -171,6 +177,46 @@ func _on_dfs_pressed() -> void:
 	# roda todos os passos
 	while _dfs_visualizer.avancar():
 		pass
+
+# === FEATURE DIJKSTRA (isolada em core_extensions/graph_algorithms/) ===
+func _montar_dijkstra() -> void:
+	_dijkstra_visualizer = DijkstraVisualizerScript.new()
+	_dijkstra_visualizer.name = "DijkstraVisualizer"
+	add_child(_dijkstra_visualizer)
+	if _dijkstra_visualizer.has_method("set_registry"):
+		_dijkstra_visualizer.set_registry(_graph_registry)
+	_btn_dijkstra = Button.new()
+	_btn_dijkstra.text = "Dijkstra - Pior cenario a partir do paciente zero"
+	_btn_dijkstra.name = "BtnDijkstra"
+	_btn_dijkstra.position = Vector2(640, 200)
+	_btn_dijkstra.size = Vector2(280, 32)
+	add_child(_btn_dijkstra)
+	_btn_dijkstra.pressed.connect(_on_dijkstra_pressed)
+	_lbl_dijkstra_resultado = Label.new()
+	_lbl_dijkstra_resultado.text = ""
+	_lbl_dijkstra_resultado.name = "LblDijkstra"
+	_lbl_dijkstra_resultado.position = Vector2(640, 240)
+	_lbl_dijkstra_resultado.size = Vector2(400, 24)
+	add_child(_lbl_dijkstra_resultado)
+
+func _on_dijkstra_pressed() -> void:
+	if not is_instance_valid(_dijkstra_visualizer):
+		return
+	var origem: int = _escolher_origem_bfs()
+	if origem < 0:
+		printerr("Dijkstra: nenhum no origem")
+		return
+	var res: Dictionary = _dijkstra_visualizer.executar(origem)
+	var dest: int = int(res.get("pior_destino", -1))
+	var dist: float = float(res.get("pior_distancia", 0.0))
+	var caminho: Array = res.get("pior_caminho", [])
+	if is_instance_valid(_lbl_dijkstra_resultado):
+		if dest < 0 or caminho.is_empty():
+			_lbl_dijkstra_resultado.text = "Dijkstra: sem caminho alem da origem"
+		else:
+			var caminho_str: String = " -> ".join(camino.map(func(x): return str(x)))
+			_lbl_dijkstra_resultado.text = "Dijkstra: origem %d -> %d (dist %.1f) caminho: %s" % [origem, dest, dist, caminho_str]
+	print("Dijkstra resultado: orig=", origem, " dest=", dest, " dist=", dist, " caminho=", caminho)
 
 func _on_graph_reset() -> void:
 	if not is_instance_valid(view_simulacao):
