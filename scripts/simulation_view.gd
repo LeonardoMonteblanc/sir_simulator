@@ -15,6 +15,9 @@ const CORES_ESTADOS: Dictionary = {
 @onready var editor_grafos: GraphEdit = $GraphEdit
 @onready var botao_passo: Button = $BtnPasso
 
+# Hook opcional de auto-sim (injetado via injetar_autosim()). Se null, modo manual.
+var _autosim: Node = null
+
 signal passo_concluido(dados_dia: Dictionary)
 signal surto_encerrado
 
@@ -117,6 +120,50 @@ func _on_step_pressed() -> void:
 	if modelo_epidemiologico._check_outbreak_over():
 		botao_passo.disabled = true
 		surto_encerrado.emit()
+		# encerra simulacao automatica se estiver ativa
+		stop_autosim()
+
+# Injeta controller de auto-sim (AutoSimulationController). Idempotente.
+func injetar_autosim(controller: Node) -> void:
+	if _autosim == controller:
+		return
+	# desconecta anterior
+	if is_instance_valid(_autosim) and _autosim.has_signal("tick"):
+		if _autosim.tick.is_connected(_on_step_pressed):
+			_autosim.tick.disconnect(_on_step_pressed)
+	_autosim = controller
+	if is_instance_valid(_autosim):
+		if _autosim.has_signal("tick") and not _autosim.tick.is_connected(_on_step_pressed):
+			_autosim.tick.connect(_on_step_pressed)
+
+# Hooks publicos de play/pause/stop consumidos pelo control_panel.
+func start_autosim(speed_seconds: float = 1.0) -> void:
+	if not is_instance_valid(_autosim):
+		return
+	_autosim.call("start", speed_seconds)
+
+func pause_autosim() -> void:
+	if not is_instance_valid(_autosim):
+		return
+	_autosim.call("pause_simulation")
+
+func resume_autosim() -> void:
+	if not is_instance_valid(_autosim):
+		return
+	_autosim.call("resume")
+
+func stop_autosim() -> void:
+	if not is_instance_valid(_autosim):
+		return
+	_autosim.call("stop")
+
+func set_speed_autosim(speed_seconds: float) -> void:
+	if not is_instance_valid(_autosim):
+		return
+	_autosim.call("set_speed", speed_seconds)
+
+func has_autosim() -> bool:
+	return is_instance_valid(_autosim)
 
 func renderizar_estado_atual() -> void:
 	if not is_instance_valid(modelo_epidemiologico):
