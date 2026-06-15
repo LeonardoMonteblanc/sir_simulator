@@ -14,6 +14,8 @@ const GraphRegistryScript = preload("res://scripts/core_extensions/graph_algorit
 const GraphControlPanelScene = preload("res://scripts/core_extensions/graph_algorithms/graph_control_panel.tscn")
 const BFSRunnerScript = preload("res://scripts/core_extensions/graph_algorithms/bfs_runner.gd")
 const BFSVisualizerScript = preload("res://scripts/core_extensions/graph_algorithms/bfs_visualizer.gd")
+const DFSRunnerScript = preload("res://scripts/core_extensions/graph_algorithms/dfs_runner.gd")
+const DFSVisualizerScript = preload("res://scripts/core_extensions/graph_algorithms/dfs_visualizer.gd")
 
 @onready var view_simulacao: Control = $ColorRect/SimulationView/SimulationView
 @onready var hud_interface: Control = $ColorRect/HUD
@@ -29,6 +31,8 @@ var _graph_control_panel: PanelContainer = null
 var _bfs_visualizer: Node = null
 var _btn_bfs: Button = null
 var _btn_bfs_cancel: Button = null
+var _dfs_visualizer: Node = null
+var _btn_dfs: Button = null
 
 var parametros_globais: Dictionary = {}
 
@@ -76,6 +80,8 @@ func _montar_graph_registry() -> void:
 	add_child(_bfs_visualizer)
 	if _bfs_visualizer.has_method("set_registry"):
 		_bfs_visualizer.set_registry(_graph_registry)
+	# visualizador DFS (feature isolada)
+	_montar_dfs()
 	# botao BFS: roda BFS a partir do paciente zero (ou primeiro agente exposto/infectado)
 	_btn_bfs = Button.new()
 	_btn_bfs.text = "BFS a partir do paciente zero"
@@ -133,6 +139,38 @@ func _on_bfs_cancel_pressed() -> void:
 	if is_instance_valid(_bfs_visualizer):
 		_bfs_visualizer.cancelar()
 	_btn_bfs_cancel.visible = false
+
+# === FEATURE DFS (isolada em core_extensions/graph_algorithms/) ===
+func _montar_dfs() -> void:
+	_dfs_visualizer = DFSVisualizerScript.new()
+	_dfs_visualizer.name = "DFSVisualizer"
+	add_child(_dfs_visualizer)
+	if _dfs_visualizer.has_method("set_registry"):
+		_dfs_visualizer.set_registry(_graph_registry)
+	_btn_dfs = Button.new()
+	_btn_dfs.text = "DFS a partir do paciente zero"
+	_btn_dfs.name = "BtnDFS"
+	_btn_dfs.position = Vector2(640, 160)
+	_btn_dfs.size = Vector2(280, 32)
+	add_child(_btn_dfs)
+	_btn_dfs.pressed.connect(_on_dfs_pressed)
+
+func _on_dfs_pressed() -> void:
+	if not is_instance_valid(_dfs_visualizer) or not is_instance_valid(view_simulacao):
+		return
+	var modelo = view_simulacao.modelo_epidemiologico
+	if not is_instance_valid(modelo):
+		return
+	var origem: int = _escolher_origem_bfs()
+	if origem < 0:
+		printerr("DFS: nenhum no origem encontrado")
+		return
+	if not _dfs_visualizer.preparar(origem):
+		printerr("DFS: preparar falhou")
+		return
+	# roda todos os passos
+	while _dfs_visualizer.avancar():
+		pass
 
 func _on_graph_reset() -> void:
 	if not is_instance_valid(view_simulacao):
