@@ -6,17 +6,18 @@ const LARGURA_GRID: float = 1000.0
 const ALTURA_GRID: float = 700.0
 const RAIO_CORTE_PADRAO: float = 250.0
 
-# funcao que gera a malha e as posições do grafo
+# funcao que gera a malha e as posicoes do grafo
 func generate(num_nodes: int, layout: String) -> Dictionary:
 	var malha_adjacencia: Dictionary = {}
 	var coordenadas_nos: Dictionary = {}
-	
+
+	if num_nodes <= 0:
+		return {"adjacency": malha_adjacencia, "positions": coordenadas_nos}
+
 	for i in range(num_nodes):
 		malha_adjacencia[i] = []
 		coordenadas_nos[i] = Vector2.ZERO
-	
-	print(malha_adjacencia)
-	
+
 	var rng:= RandomNumberGenerator.new()
 	rng.randomize()
 	
@@ -29,8 +30,7 @@ func generate(num_nodes: int, layout: String) -> Dictionary:
 			_generate_free_range(num_nodes, malha_adjacencia, coordenadas_nos, rng)
 	
 	_garantir_conectividade(num_nodes, malha_adjacencia, coordenadas_nos)
-	
-	print(malha_adjacencia)
+
 	return {
 		"adjacency": malha_adjacencia,
 		"positions": coordenadas_nos
@@ -101,11 +101,20 @@ func _garantir_conectividade(n: int, adj: Dictionary, pos: Dictionary):
 		if adj[i].is_empty() and n > 1:
 			var no_proximo: int = -1
 			var menor_distancia: float = INF
-			
+
 			for j in range(n):
 				if i == j:
 					continue
-				
+
+				# evita conectar a no que ja tem link de volta para i
+				var ja_conectado: bool = false
+				for aresta in adj[i]:
+					if aresta.get("neighbor_id", -1) == j:
+						ja_conectado = true
+						break
+				if ja_conectado:
+					continue
+
 				var dist = pos[i].distance_to(pos[j])
 				if dist < menor_distancia:
 					menor_distancia = dist
