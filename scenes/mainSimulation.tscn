@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bhq76c8334s48" path="res://scripts/main_simulation.gd" id="1_k6cwb"]
 [ext_resource type="PackedScene" uid="uid://b8pec1ggx470v" path="res://scenes/simulationView.tscn" id="1_ra0bp"]
 [ext_resource type="PackedScene" uid="uid://c2321r7gwdtu7" path="res://scenes/hud.tscn" id="2_ikh8g"]
+[ext_resource type="PackedScene" uid="uid://cay1l4aolfjqw" path="res://scenes/metricsView.tscn" id="3_metrics"]
 
 [node name="MainSimulation" type="Control" unique_id=1919198253]
 layout_mode = 3
@@ -43,3 +44,10 @@ offset_bottom = 2.0
 grow_horizontal = 1
 grow_vertical = 1
 scale = Vector2(0.94128734, 0.8268204)
+
+[node name="MetricsView" parent="ColorRect" unique_id=2107089111 instance=ExtResource("3_metrics")]
+layout_mode = 1
+offset_left = 1052.0
+offset_top = 232.0
+offset_right = 1454.0
+offset_bottom = 480.0
