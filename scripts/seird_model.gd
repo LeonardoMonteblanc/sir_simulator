@@ -140,9 +140,28 @@ func initialize(params: Dictionary, dict_adjacencia: Dictionary) -> void:
 			agentes_s.remove_at(idx)
 
 	var suscetiveis_rest = _get_agentes_by_state(Estado.S)
-	if suscetiveis_rest.size() > 0:
+	# se o chamador passou initial_infected em params, usa essa lista
+	var pre_definidos: Array = params.get("initial_infected", [])
+	if pre_definidos.size() > 0:
+		set_initial_infected(pre_definidos)
+	elif suscetiveis_rest.size() > 0:
 		var idx_p_zero = rng.randi() % suscetiveis_rest.size()
 		_expose_agent(suscetiveis_rest[idx_p_zero])
+
+# Define quais agentes (por id) iniciam infectados. So funciona em estado S.
+# Idempotente e seguro contra ids invalidos.
+func set_initial_infected(agent_ids: Array) -> void:
+	if agentes.is_empty():
+		return
+	for aid in agent_ids:
+		var idx: int = int(aid)
+		if idx < 0 or idx >= agentes.size():
+			continue
+		var ag: Agente = agentes[idx]
+		if ag.estado == Estado.S:
+			_expose_agent(ag)
+			if dia_prim_infectado == -1:
+				dia_prim_infectado = dia
 
 func step() -> Dictionary:
 	var ids_infectados: Array = []

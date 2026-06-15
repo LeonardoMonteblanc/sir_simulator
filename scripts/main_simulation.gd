@@ -8,6 +8,8 @@ extends Control
 const AutoSimControllerScript = preload("res://scripts/core_extensions/auto_simulation/auto_simulation_controller.gd")
 const ControlPanelScript = preload("res://scripts/core_extensions/auto_simulation/control_panel.gd")
 const ControlPanelScene = preload("res://scripts/core_extensions/auto_simulation/control_panel.tscn")
+const InfectionSelectorScript = preload("res://scripts/core_extensions/manual_infection/infection_selector.gd")
+const InfectionSelectorScene = preload("res://scripts/core_extensions/manual_infection/infection_selector.tscn")
 
 @onready var view_simulacao: Control = $ColorRect/SimulationView/SimulationView
 @onready var hud_interface: Control = $ColorRect/HUD
@@ -16,6 +18,8 @@ const ControlPanelScene = preload("res://scripts/core_extensions/auto_simulation
 # Features (criadas em runtime; nulas quando a extensao correspondente nao foi anexada)
 var _auto_sim_ctrl: Node = null
 var _control_panel: PanelContainer = null
+var _infection_selector: PanelContainer = null
+var _btn_abrir_sel: Button = null
 
 var parametros_globais: Dictionary = {}
 
@@ -36,6 +40,63 @@ func _ready() -> void:
 
 	# monta feature de auto-sim
 	_montar_auto_sim()
+	# monta feature de selecao manual de infectados
+	_montar_manual_infection()
+
+
+# === FEATURE MANUAL INFECTION (isolada em core_extensions/manual_infection/) ===
+func _montar_manual_infection() -> void:
+	# 1. cria o seletor (invisivel por padrao)
+	_infection_selector = InfectionSelectorScene.instantiate() as PanelContainer
+	if _infection_selector == null:
+		return
+	_infection_selector.name = "InfectionSelector"
+	_infection_selector.visible = false
+	# posiciona centrado aproximado
+	_infection_selector.position = Vector2(660, 380)
+	_infection_selector.size = Vector2(440, 380)
+	add_child(_infection_selector)
+	_infection_selector.confirmar_pressed.connect(_on_infection_confirmar)
+	_infection_selector.cancelar_pressed.connect(_on_infection_cancelar)
+	# 2. cria botao de abrir
+	_btn_abrir_sel = Button.new()
+	_btn_abrir_sel.text = "Escolher Infectados"
+	_btn_abrir_sel.name = "BtnAbrirSelector"
+	_btn_abrir_sel.position = Vector2(1052, 460)
+	_btn_abrir_sel.size = Vector2(402, 32)
+	add_child(_btn_abrir_sel)
+	_btn_abrir_sel.pressed.connect(_on_abrir_selector)
+
+func _on_abrir_selector() -> void:
+	if not is_instance_valid(view_simulacao) or not is_instance_valid(view_simulacao.modelo_epidemiologico):
+		return
+	if not is_instance_valid(_infection_selector):
+		return
+	var modelo = view_simulacao.modelo_epidemiologico
+	_infection_selector.popular(modelo.agentes)
+	_infection_selector.visible = true
+
+func _on_infection_confirmar(ids: Array) -> void:
+	if not is_instance_valid(view_simulacao) or not is_instance_valid(view_simulacao.modelo_epidemiologico):
+		return
+	var modelo = view_simulacao.modelo_epidemiologico
+	# se ids vazio, nao altera (deixa aleatorio); senao aplica
+	if ids.is_empty():
+		# pega um suscetivel aleatorio para nao ficar sem infectado inicial
+		var sus: Array = []
+		for ag in modelo.agentes:
+			if ag.estado == 0:
+				sus.append(ag.id)
+		if sus.size() > 0:
+			modelo.set_initial_infected([sus[modelo.rng.randi() % sus.size()]])
+	else:
+		modelo.set_initial_infected(ids)
+	view_simulacao.renderizar_estado_atual()
+	_infection_selector.visible = false
+
+func _on_infection_cancelar() -> void:
+	if is_instance_valid(_infection_selector):
+		_infection_selector.visible = false
 
 func _singleton_exists(nome: String) -> bool:
 	var root: Node = get_tree().root if get_tree() else null
