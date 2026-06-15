@@ -3,6 +3,8 @@ extends Node
 # Visualizador BFS: aplica ao registry a cor por nivel (onda de propagacao).
 # Core extensions: nao toca no core. Consome graph_registry.
 
+const BFSRunnerScript = preload("res://scripts/core_extensions/graph_algorithms/bfs_runner.gd")
+
 const COR_POR_NIVEL: Array[Color] = [
 	Color(0.95, 0.85, 0.10), # nivel 0 - amarelo
 	Color(0.90, 0.45, 0.05), # nivel 1 - laranja
@@ -38,7 +40,7 @@ func preparar(origem: int) -> bool:
 	if not ids.has(origem):
 		return false
 	var adj: Dictionary = _registry.get_adjacencia()
-	_bfs_result = BFSRunner.executar(adj, origem, ids)
+	_bfs_result = BFSRunnerScript.executar(adj, origem, ids)
 	_nivel_por_id = _bfs_result.get("niveis", {})
 	# limpa qualquer marcacao anterior
 	_registry.resetar_cores_algoritmo()
@@ -53,7 +55,7 @@ func avancar() -> bool:
 	if not is_instance_valid(_registry):
 		_rodando = false
 		return false
-	var grupos: Dictionary = BFSRunner.por_nivel(_bfs_result)
+	var grupos: Dictionary = BFSRunnerScript.por_nivel(_bfs_result)
 	var ids: Array = grupos.get(_step_atual, [])
 	if ids.is_empty():
 		_rodando = false

@@ -214,7 +214,10 @@ func _on_dijkstra_pressed() -> void:
 		if dest < 0 or caminho.is_empty():
 			_lbl_dijkstra_resultado.text = "Dijkstra: sem caminho alem da origem"
 		else:
-			var caminho_str: String = " -> ".join(camino.map(func(x): return str(x)))
+			var partes: Array = []
+			for no in caminho:
+				partes.append(str(no))
+			var caminho_str: String = " -> ".join(partes)
 			_lbl_dijkstra_resultado.text = "Dijkstra: origem %d -> %d (dist %.1f) caminho: %s" % [origem, dest, dist, caminho_str]
 	print("Dijkstra resultado: orig=", origem, " dest=", dest, " dist=", dist, " caminho=", caminho)
 

@@ -3,6 +3,9 @@
 android/
 .import/
 
+# UID gerados pelo editor (cache local)
+*.uid
+
 # Imported translations (automatically generated from CSV files)
 *.translation
 

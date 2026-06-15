@@ -4,6 +4,8 @@ extends Node
 # destaca visualmente as arestas do caminho encontrado (pior caso por padrao).
 # Consome graph_registry.
 
+const DijkstraRunnerScript = preload("res://scripts/core_extensions/graph_algorithms/dijkstra_runner.gd")
+
 const COR_CAMINHO: Color = Color(0.20, 0.95, 0.30, 1.0)  # verde brilhante para caminho
 const COR_DISTANCIA: Color = Color(0.20, 0.45, 0.80, 1.0)  # azul para nos visitados (alcancados)
 
@@ -19,7 +21,7 @@ func executar(origem: int) -> Dictionary:
 		return {}
 	var ids: Array = _registry.get_todos_ids()
 	var adj: Dictionary = _registry.get_adjacencia()
-	_resultado = DijkstraRunner.executar(adj, origem, ids)
+	_resultado = DijkstraRunnerScript.executar(adj, origem, ids)
 	# destaca caminho do pior caso (ou origem se ela mesma for a mais distante)
 	if _resultado.get("pior_caminho", []).size() > 1:
 		_destacar_caminho(_resultado["pior_caminho"])
