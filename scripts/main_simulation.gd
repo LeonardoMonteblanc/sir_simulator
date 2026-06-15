@@ -12,6 +12,8 @@ const InfectionSelectorScript = preload("res://scripts/core_extensions/manual_in
 const InfectionSelectorScene = preload("res://scripts/core_extensions/manual_infection/infection_selector.tscn")
 const GraphRegistryScript = preload("res://scripts/core_extensions/graph_algorithms/graph_registry.gd")
 const GraphControlPanelScene = preload("res://scripts/core_extensions/graph_algorithms/graph_control_panel.tscn")
+const BFSRunnerScript = preload("res://scripts/core_extensions/graph_algorithms/bfs_runner.gd")
+const BFSVisualizerScript = preload("res://scripts/core_extensions/graph_algorithms/bfs_visualizer.gd")
 
 @onready var view_simulacao: Control = $ColorRect/SimulationView/SimulationView
 @onready var hud_interface: Control = $ColorRect/HUD
@@ -24,6 +26,9 @@ var _infection_selector: PanelContainer = null
 var _btn_abrir_sel: Button = null
 var _graph_registry: Node = null
 var _graph_control_panel: PanelContainer = null
+var _bfs_visualizer: Node = null
+var _btn_bfs: Button = null
+var _btn_bfs_cancel: Button = null
 
 var parametros_globais: Dictionary = {}
 
@@ -65,6 +70,69 @@ func _montar_graph_registry() -> void:
 		_graph_control_panel.size = Vector2(280, 60)
 		add_child(_graph_control_panel)
 		_graph_control_panel.reset_pressed.connect(_on_graph_reset)
+	# visualizador BFS (feature isolada - se deletar esta secao, BFS some sem quebrar core)
+	_bfs_visualizer = BFSVisualizerScript.new()
+	_bfs_visualizer.name = "BFSVisualizer"
+	add_child(_bfs_visualizer)
+	if _bfs_visualizer.has_method("set_registry"):
+		_bfs_visualizer.set_registry(_graph_registry)
+	# botao BFS: roda BFS a partir do paciente zero (ou primeiro agente exposto/infectado)
+	_btn_bfs = Button.new()
+	_btn_bfs.text = "BFS a partir do paciente zero"
+	_btn_bfs.name = "BtnBFS"
+	_btn_bfs.position = Vector2(640, 80)
+	_btn_bfs.size = Vector2(280, 32)
+	add_child(_btn_bfs)
+	_btn_bfs.pressed.connect(_on_bfs_pressed)
+	# botao cancelar
+	_btn_bfs_cancel = Button.new()
+	_btn_bfs_cancel.text = "Cancelar BFS"
+	_btn_bfs_cancel.name = "BtnBFSCancel"
+	_btn_bfs_cancel.position = Vector2(640, 120)
+	_btn_bfs_cancel.size = Vector2(280, 32)
+	_btn_bfs_cancel.visible = false
+	add_child(_btn_bfs_cancel)
+	_btn_bfs_cancel.pressed.connect(_on_bfs_cancel_pressed)
+
+func _on_bfs_pressed() -> void:
+	if not is_instance_valid(_bfs_visualizer) or not is_instance_valid(view_simulacao):
+		return
+	var modelo = view_simulacao.modelo_epidemiologico
+	if not is_instance_valid(modelo):
+		return
+	# escolhe origem: paciente zero, primeiro infectado, ou 0 se nada
+	var origem: int = _escolher_origem_bfs()
+	if origem < 0:
+		printerr("BFS: nenhum no origem encontrado")
+		return
+	if not _bfs_visualizer.preparar(origem):
+		printerr("BFS: preparar falhou")
+		return
+	# roda todos os niveis de uma vez (animacao instantanea) - usuarios preferencias
+	# se quiser passo a passo, trocar por animacao com await
+	while _bfs_visualizer.avancar():
+		pass  # percorre ate acabar
+	_btn_bfs_cancel.visible = false
+
+func _escolher_origem_bfs() -> int:
+	if not is_instance_valid(view_simulacao):
+		return -1
+	var modelo = view_simulacao.modelo_epidemiologico
+	if not is_instance_valid(modelo):
+		return -1
+	# 1) procura primeiro agente no estado E ou I
+	for ag in modelo.agentes:
+		if ag.estado == 1 or ag.estado == 2:
+			return ag.id
+	# 2) senao usa o primeiro id registrado
+	if modelo.agentes.size() > 0:
+		return modelo.agentes[0].id
+	return -1
+
+func _on_bfs_cancel_pressed() -> void:
+	if is_instance_valid(_bfs_visualizer):
+		_bfs_visualizer.cancelar()
+	_btn_bfs_cancel.visible = false
 
 func _on_graph_reset() -> void:
 	if not is_instance_valid(view_simulacao):
