@@ -111,6 +111,10 @@ func initialize(params: Dictionary, dict_adjacencia: Dictionary) -> void:
 
 	var qtde_agentes = params["num_agents"]
 	var qtde_femeas = params.get("num_females", int(qtde_agentes) * 0.7)
+	if qtde_femeas > qtde_agentes:
+		qtde_femeas = qtde_agentes
+	if qtde_femeas < 0:
+		qtde_femeas = 0
 	var cob_vacina = params.get("vac_coverage", 0.0)
 
 	for i in range(qtde_agentes):
@@ -208,8 +212,15 @@ func _get_agentes_by_state(estado: Estado) -> Array:
 	return encontrados
 
 func vaccinate(fracao: float) -> void:
+	if fracao <= 0.0:
+		return
 	var candidatos = _get_agentes_by_state(Estado.S)
-	var qtd_vacinar = int(candidatos.size() * fracao)
+	if candidatos.is_empty():
+		return
+	var qtd_vacinar: int = int(candidatos.size() * fracao)
+	if qtd_vacinar <= 0:
+		qtd_vacinar = 1
+	qtd_vacinar = min(qtd_vacinar, candidatos.size())
 	candidatos.shuffle()
 	for i in range(qtd_vacinar):
 		candidatos[i].estado = Estado.R
@@ -302,8 +313,17 @@ func _get_infection_prob(ag: Agente, ids_infectados: Array) -> float:
 		return 0.0
 	var prod_nao_infeccao: float = 1.0
 	for viz in vizinhos:
-		var id_viz = viz.get("neighbor_id")
+		if not viz is Dictionary:
+			# entradas antigas podem ser apenas inteiros; tratar como peso 1.0
+			var id_viz_int: int = viz
+			if ids_infectados.has(id_viz_int):
+				prod_nao_infeccao *= (1.0 - beta)
+			continue
+		var id_viz = viz.get("neighbor_id", -1)
 		var peso = viz.get("weight", 1.0)
+		# peso invalido vira 1.0
+		if not (peso is float) and not (peso is int):
+			peso = 1.0
 		if ids_infectados.has(id_viz):
 			prod_nao_infeccao *= (1.0 - beta * peso)
 	return 1.0 - prod_nao_infeccao
