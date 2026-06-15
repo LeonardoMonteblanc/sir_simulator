@@ -18,6 +18,10 @@ const CORES_ESTADOS: Dictionary = {
 # Hook opcional de auto-sim (injetado via injetar_autosim()). Se null, modo manual.
 var _autosim: Node = null
 
+# Hook opcional de registry de grafo (injetado via injetar_registry()).
+# Usado por algoritmos de grafo (BFS/DFS/Dijkstra).
+var _graph_registry: Node = null
+
 signal passo_concluido(dados_dia: Dictionary)
 signal surto_encerrado
 
@@ -64,6 +68,14 @@ func _construir_rede_grafica(adj: Dictionary, pos: Dictionary) -> void:
 	var lista_agentes: Array = modelo_epidemiologico.agentes
 	var nos_por_id: Dictionary = {}
 
+	# informa registry opcional (caso algoritmo queira iterar depois)
+	if is_instance_valid(_graph_registry) and _graph_registry.has_method("limpar"):
+		_graph_registry.limpar()
+	if is_instance_valid(_graph_registry) and _graph_registry.has_method("set_adjacencia"):
+		_graph_registry.set_adjacencia(adj)
+	if is_instance_valid(_graph_registry) and _graph_registry.has_method("set_cores_seird"):
+		_graph_registry.set_cores_seird(CORES_ESTADOS)
+
 	# cria um GraphNode por agente
 	for agente_obj in lista_agentes:
 		var no_agente := GraphNode.new()
@@ -74,7 +86,8 @@ func _construir_rede_grafica(adj: Dictionary, pos: Dictionary) -> void:
 		var pos_fallback: Vector2 = Vector2((agente_obj.id % 5) * 150, (agente_obj.id / 5) * 100)
 		no_agente.position_offset = pos.get(agente_obj.id, pos_fallback)
 		no_agente.custom_minimum_size = Vector2(80, 50)
-		no_agente.self_modulate = CORES_ESTADOS.get(agente_obj.estado, Color.WHITE)
+		var cor_inicial: Color = CORES_ESTADOS.get(agente_obj.estado, Color.WHITE)
+		no_agente.self_modulate = cor_inicial
 
 		# slot interno (grafo precisa de filhos para criar ports)
 		var slot_control := Control.new()
@@ -86,6 +99,9 @@ func _construir_rede_grafica(adj: Dictionary, pos: Dictionary) -> void:
 		no_agente.set_slot(0, true, 0, Color.WHITE, true, 1, Color.WHITE)
 
 		nos_por_id[agente_obj.id] = no_agente
+		# registra no registry (se anexado)
+		if is_instance_valid(_graph_registry) and _graph_registry.has_method("registrar"):
+			_graph_registry.registrar(agente_obj.id, no_agente, cor_inicial)
 
 	# process_frame para o editor preparar os slots antes de conectar
 	await get_tree().process_frame
@@ -164,6 +180,34 @@ func set_speed_autosim(speed_seconds: float) -> void:
 
 func has_autosim() -> bool:
 	return is_instance_valid(_autosim)
+
+# === HOOKS PUBLICOS DO GRAPH REGISTRY ===
+func injetar_registry(registry: Node) -> void:
+	_graph_registry = registry
+	if is_instance_valid(_graph_registry):
+		if _graph_registry.has_method("set_grafo_edit"):
+			_graph_registry.set_grafo_edit(editor_grafos)
+
+func get_registry() -> Node:
+	return _graph_registry
+
+# quando um agente muda de estado no modelo, atualiza a cor base no registry
+# assim o "reset" restaura a cor certa
+func _sincronizar_cor_base(id: int) -> void:
+	if not is_instance_valid(_graph_registry):
+		return
+	if not _graph_registry.has_method("registrar"):
+		return
+	var n: GraphNode = get_node_or_null(str(id)) as GraphNode
+	if n == null:
+		return
+	# so atualiza se nao ha marcacao de algoritmo ativa
+	if not (_graph_registry.has_method("get_node_by_id")):
+		return
+	# mantem a cor visivel agora no no
+	# (registry ja guarda cor_base no registro, ela nao muda com SEIRD)
+	# mas se quiser "redefinir base" apos SEIRD update:
+	# nao fazemos aqui - o reset geral re-aplica cor base via resetar_cores_base
 
 func renderizar_estado_atual() -> void:
 	if not is_instance_valid(modelo_epidemiologico):

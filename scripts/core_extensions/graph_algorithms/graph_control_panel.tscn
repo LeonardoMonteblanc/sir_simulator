@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgr4pc4rrsttw"]
+
+[ext_resource type="Script" path="res://scripts/core_extensions/graph_algorithms/graph_control_panel.gd" id="1_gc"]
+
+[node name="GraphControlPanel" type="PanelContainer"]
+script = ExtResource("1_gc")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Layout"]
+layout_mode = 2
+text = "Controles de Grafo"
+horizontal_alignment = 1
+
+[node name="Btns" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="BtnReset" type="Button" parent="Layout/Btns"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Resetar Grafo"

@@ -10,6 +10,8 @@ const ControlPanelScript = preload("res://scripts/core_extensions/auto_simulatio
 const ControlPanelScene = preload("res://scripts/core_extensions/auto_simulation/control_panel.tscn")
 const InfectionSelectorScript = preload("res://scripts/core_extensions/manual_infection/infection_selector.gd")
 const InfectionSelectorScene = preload("res://scripts/core_extensions/manual_infection/infection_selector.tscn")
+const GraphRegistryScript = preload("res://scripts/core_extensions/graph_algorithms/graph_registry.gd")
+const GraphControlPanelScene = preload("res://scripts/core_extensions/graph_algorithms/graph_control_panel.tscn")
 
 @onready var view_simulacao: Control = $ColorRect/SimulationView/SimulationView
 @onready var hud_interface: Control = $ColorRect/HUD
@@ -20,6 +22,8 @@ var _auto_sim_ctrl: Node = null
 var _control_panel: PanelContainer = null
 var _infection_selector: PanelContainer = null
 var _btn_abrir_sel: Button = null
+var _graph_registry: Node = null
+var _graph_control_panel: PanelContainer = null
 
 var parametros_globais: Dictionary = {}
 
@@ -42,6 +46,35 @@ func _ready() -> void:
 	_montar_auto_sim()
 	# monta feature de selecao manual de infectados
 	_montar_manual_infection()
+	# monta registry de grafo e painel de reset
+	_montar_graph_registry()
+
+
+# === FEATURE GRAPH REGISTRY + RESET (base para algoritmos) ===
+func _montar_graph_registry() -> void:
+	_graph_registry = GraphRegistryScript.new()
+	_graph_registry.name = "GraphRegistry"
+	add_child(_graph_registry)
+	if is_instance_valid(view_simulacao) and view_simulacao.has_method("injetar_registry"):
+		view_simulacao.injetar_registry(_graph_registry)
+	# painel de reset
+	_graph_control_panel = GraphControlPanelScene.instantiate() as PanelContainer
+	if is_instance_valid(_graph_control_panel):
+		_graph_control_panel.name = "GraphControlPanel"
+		_graph_control_panel.position = Vector2(640, 10)
+		_graph_control_panel.size = Vector2(280, 60)
+		add_child(_graph_control_panel)
+		_graph_control_panel.reset_pressed.connect(_on_graph_reset)
+
+func _on_graph_reset() -> void:
+	if not is_instance_valid(view_simulacao):
+		return
+	# limpa marcacoes de algoritmo (cores temporarias)
+	if is_instance_valid(_graph_registry) and _graph_registry.has_method("resetar_cores_algoritmo"):
+		_graph_registry.resetar_cores_algoritmo()
+	# restaura cores SEIRD nos nos (porque o reset do algoritmo deixa a cor
+	# SEIRD anterior la, mas a simulacao pode ter avancado desde o registro)
+	view_simulacao.renderizar_estado_atual()
 
 
 # === FEATURE MANUAL INFECTION (isolada em core_extensions/manual_infection/) ===
