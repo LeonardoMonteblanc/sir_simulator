@@ -9,12 +9,16 @@ para retomar sem perda de contexto.
 ## Estado Atual (Pos-Execucao Completa)
 
 ### Branch: `review`
-### Ultimo commit merge: `55bb231` (fase 8 dijkstra)
+### Ultimo commit merge: `2fe84a3` (fix revisao recursiva)
 
 Working tree: limpo
 
-### Commits locais (12 novos, branch review):
+### Commits locais (16 novos, branch review):
 ```
+2fe84a3 fix: 3 bugs de runtime descobertos em revisao recursiva
+4e6a4c4 docs: correcoes de consistencia pos-revisao recursiva
+45ed41c docs: README oficial completo, CHANGELOG pos-execucao, ARCHITECTURE e CHECKPOINT atualizados
+a23688e docs: atualiza CHANGELOG, ARCHITECTURE e CHECKPOINT pos-execucao completa
 55bb231 feat(dijkstra): runner com pesos + visualizador + botao
 79f0e36 feat(dfs): runner iterativo + visualizador + botao + caminho_para
 9aa4957 feat(bfs): runner puro + visualizador + botao na cena

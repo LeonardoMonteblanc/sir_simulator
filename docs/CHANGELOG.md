@@ -151,9 +151,30 @@ Formato: data, fase, branch, commits, resumo.
 - Fase 6: 1 commit (BFS)
 - Fase 7: 1 commit (DFS)
 - Fase 8: 1 commit (Dijkstra)
-- Docs iniciais: 2 commits
+- Pos-execucao: 4 commits (documentacao + bugfix revisao)
+- Docs iniciais: 2 commits (pre-fase)
 
-### Total: 12 commits locais, todos em `review`, NUNCA pushados para origin.
+### Total: 16 commits locais, todos em `review`, NUNCA pushados para origin.
+
+### Historico completo de commits (top-down, mais recentes primeiro)
+```
+2fe84a3 fix: 3 bugs de runtime descobertos em revisao recursiva
+4e6a4c4 docs: correcoes de consistencia pos-revisao recursiva
+45ed41c docs: README oficial completo, CHANGELOG pos-execucao...
+a23688e docs: atualiza CHANGELOG, ARCHITECTURE e CHECKPOINT pos-execucao
+55bb231 feat(dijkstra): runner com pesos + visualizador + botao
+79f0e36 feat(dfs): runner iterativo + visualizador + botao + caminho_para
+9aa4957 feat(bfs): runner puro + visualizador + botao na cena
+3e0101b feat(graph-controls): registry de nos + painel reset
+4549fc8 feat(manual_infection): UI para escolher pacientes zero
+f1c986f feat(auto-sim): controller Timer play/pause/stop + panel UI
+b49d128 fix(simulation_view): is_instance_valid, renderizar_estado_atual...
+c4e4cbb fix(main_simulation): corrige caminho de node, sincroniza params
+434aa44 fix(seird_model): valida num_females, robustez em _get_infection_prob
+bbd16c0 fix(graph_generator): remove debug prints, valida num_nodes<=0
+1bb4f1d docs: checkpoint pre-fase-1
+228f019 docs: plano completo, changelog e arquitetura base
+```
 
 ### Quantidade de testes:
 - validate_graph.gd

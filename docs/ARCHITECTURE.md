@@ -24,7 +24,7 @@ Responsabilidade: estado, logica epidemiologica, visualizacao minima.
 
 | Arquivo | Papel | Interface Publica (todos os metodos adicionados em fases marcados com [N]) |
 |---------|-------|-------------------|
-| `seird_model.gd` | Logica SEIRD | `initialize()`, `step()`, `vaccinate()`, `isolate_infectious()`, `get_summary()`, `get_initial_infected()` [F3], `agentes`, `adjacencia`, `dia` |
+| `seird_model.gd` | Logica SEIRD | `initialize()`, `step()`, `vaccinate()`, `isolate_infectious()`, `get_summary()`, `set_initial_infected(ids)` [F3], `agentes`, `adjacencia`, `dia` |
 | `graph_generator.gd` | Topologias | `generate(num_nodes, layout) -> Dictionary{adjacency, positions}` |
 | `simulation_view.gd` | Renderiza grafo | `passo_concluido`, `surto_encerrado`, `renderizar_estado_atual()`, `atualizar_adjacencia_visual()`, `injetar_autosim()` [F2], `start/pause/resume/stop_autosim()`, `set_speed_autosim()`, `injetar_registry()` [F5] |
 | `main_simulation.gd` | Orquestra | Raiz da cena; monta todas as features em runtime via preload |

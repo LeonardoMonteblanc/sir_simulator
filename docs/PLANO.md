@@ -238,6 +238,34 @@ de aba (a UI foi adaptada para ter todos botoes visíveis lado a lado).
 
 ---
 
+## Status Final das Fases (referencia rapida)
+
+### Fases concluidas
+
+| Fase | Nome | Branch usada | Status | Commits chave |
+|------|------|--------------|--------|----------------|
+| 1 | Correcao de bugs criticos | `bugfix/critical` | CONCLUIDA | bbd16c0, 434aa44, c4e4cbb, b49d128 |
+| 2 | Simulacao automatica + Play/Pause/Stop | `feature/auto-sim` | CONCLUIDA | f1c986f |
+| 3 | Manipulacao manual de infectados | `feature/manual-infection` | CONCLUIDA | 4549fc8 |
+| 4 | Modo dual (alternar simulacao/grafo) | - | SKIP justificativa | - |
+| 5 | Graph registry + reset visual | `feature/graph-controls` | CONCLUIDA | 3e0101b |
+| 6 | BFS - propagacao em ondas | `feature/bfs` | CONCLUIDA | 9aa4957 |
+| 7 | DFS - trilha de contato | `feature/dfs` | CONCLUIDA | 79f0e36 |
+| 8 | Dijkstra - pior cenario | `feature/dijkstra` | CONCLUIDA | 55bb231 |
+
+### Commits pos-execucao (documentacao e revisao)
+
+| Tipo | Hash | Descricao |
+|------|------|-----------|
+| docs | a23688e | CHANGELOG/ARCHITECTURE/CHECKPOINT pos-execucao |
+| docs | 45ed41c | README oficial completo |
+| docs | 4e6a4c4 | correcoes de consistencia pos-revisao |
+| fix  | 2fe84a3 | 3 bugs de runtime (bfs/dfs/dijkstra sem preload + lambda parse error + .gitignore *.uid) |
+
+Total: 16 commits em `review`. Todos locais, nunca pushados.
+
+---
+
 ## Como Remover uma Feature
 
 ```bash

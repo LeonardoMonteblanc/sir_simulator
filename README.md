@@ -93,6 +93,7 @@ Documentos em `docs/`:
 | `docs/ARCHITECTURE.md` | Camadas (core vs extensions), fluxo de dados, convencoes, como adicionar/remover feature |
 | `docs/CHECKPOINT.md` | Estado atual, hash dos commits, comandos de validacao |
 | `docs/AGENT_PLAN.md` | Workflow do agente autonomo (escopo restrito, anti-esgotamento de contexto) |
+| `docs/algorithm.md` | Pseudocodigo do modelo SEIRD (matematica do modelo, nao editar) |
 
 ---
 
@@ -136,7 +137,7 @@ Documentos em `docs/`:
 ```
 +-------------------------------------------------------+
 |                                                      |
-|  scripts/core/                  (NAO modificada)     |
+|  scripts/                      (nucleo do projeto)   |
 |    seird_model.gd               logica SEIRD         |
 |    graph_generator.gd           topologias           |
 |    simulation_view.gd           view + graph         |
@@ -146,17 +147,34 @@ Documentos em `docs/`:
 |                                                      |
 |  scripts/core_extensions/       (isoladas por feature)|
 |    auto_simulation/                                  |
+|      auto_simulation_controller.gd  Timer + pl/pausa |
+|      control_panel.gd              UI do painel     |
+|      control_panel.tscn                                |
 |    manual_infection/                                  |
+|      infection_selector.gd                            |
+|      infection_selector.tscn                          |
 |    graph_algorithms/                                  |
-|      graph_registry.gd                               |
-|      bfs_runner.gd     bfs_visualizer.gd             |
-|      dfs_runner.gd     dfs_visualizer.gd             |
-|      dijkstra_runner.gd dijkstra_visualizer.gd       |
+|      graph_registry.gd            registry nos       |
+|      graph_control_panel.gd                            |
+|      graph_control_panel.tscn                          |
+|      bfs_runner.gd / bfs_visualizer.gd                |
+|      dfs_runner.gd / dfs_visualizer.gd                |
+|      dijkstra_runner.gd / dijkstra_visualizer.gd      |
 |                                                      |
 |  scripts/utils/                 (validacoes headless) |
-|    validate_*.gd                                     |
+|    validate_graph.gd                                 |
+|    validate_seird_full.gd                            |
+|    validate_autosim.gd                               |
+|    validate_manual_infection.gd                      |
+|    validate_registry.gd                              |
+|    validate_bfs.gd                                   |
+|    validate_dfs.gd                                   |
+|    validate_dijkstra.gd                              |
 +-------------------------------------------------------+
 ```
+
+OBS: scripts core ficam em `scripts/` (e nao em `scripts/core/`) para preservar os
+UIDs das cenas. Mais detalhes em [Notas finais](#decisoes-de-design).
 
 ### Principios
 
@@ -255,21 +273,25 @@ Em caso de falha, imprime `FAIL ...` e sai com codigo 1.
 
 | Branch | Conteudo |
 |--------|----------|
-| `main` | Readme inicial (intocado) |
-| `review` | Codigo de fato usado. Recebe merge de todas as fases. **NUNCA pushada sem autorizacao** |
+| `review` (default) | Codigo de fato usado. Recebe merge de todas as fases. **NUNCA pushada sem autorizacao** |
 | `feature/<nome>` | Branch efemera por feature, deletada apos merge |
+| `bugfix/<nome>` | Branch efemera de correcoes |
 
-### Commits por fase
+### Commits por fase (branch `review`)
 
 ```
 review
- +-- bb16c0/434aa44/c4e4cbb/b49d128    Fase 1 - bugfix core
+ +-- bb16c0/434aa44/c4e4cbb/b49d128    Fase 1 - bugfix core (4 commits)
  +-- f1c986f                            Fase 2 - auto-sim
  +-- 4549fc8                            Fase 3 - manual infection
- +-- 3e0101b                            Fase 5 - graph controls (registry)
- +-- 9aa4957                            Fase 6 - BFS
- +-- 79f0e36                            Fase 7 - DFS
- +-- 55bb231                            Fase 8 - Dijkstra
+ +-- 3e0101b                            Fase 5 - graph controls (registry + reset)
+ +-- 9aa4957                            Fase 6 - BFS onda
+ +-- 79f0e36                            Fase 7 - DFS trilha
+ +-- 55bb231                            Fase 8 - Dijkstra pior cenario
+ +-- a23688e                            docs - CHANGELOG/ARCHITECTURE/CHECKPOINT pos-execucao
+ +-- 45ed41c                            docs - README oficial completo
+ +-- 4e6a4c4                            docs - correcoes consistencia pos-revisao
+ +-- 2fe84a3                            fix - 3 bugs de runtime da revisao recursiva
 ```
 
 Lista completa em `git log --oneline review`.
