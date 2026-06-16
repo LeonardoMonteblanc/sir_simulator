@@ -13,7 +13,7 @@ para retomar sem perda de contexto.
 
 Working tree: limpo
 
-### Commits locais (17 novos, branch review):
+### Commits locais (18 novos, branch review):
 ```
 2fe84a3 fix: 3 bugs de runtime descobertos em revisao recursiva
 4e6a4c4 docs: correcoes de consistencia pos-revisao recursiva
