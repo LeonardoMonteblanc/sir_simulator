@@ -154,7 +154,7 @@ Formato: data, fase, branch, commits, resumo.
 - Pos-execucao: 4 commits (documentacao + bugfix revisao)
 - Docs iniciais: 2 commits (pre-fase)
 
-### Total: 19 commits locais, todos em `review`, NUNCA pushados para origin.
+### Total: ver `git log --oneline review ^b195d4a | wc -l`. Todos locais, nunca pushados.
 
 ### Historico completo de commits (top-down, mais recentes primeiro)
 ```
