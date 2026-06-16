@@ -262,7 +262,7 @@ de aba (a UI foi adaptada para ter todos botoes visíveis lado a lado).
 | docs | 4e6a4c4 | correcoes de consistencia pos-revisao |
 | fix  | 2fe84a3 | 3 bugs de runtime (bfs/dfs/dijkstra sem preload + lambda parse error + .gitignore *.uid) |
 
-Total: 18 commits em `review`. Todos locais, nunca pushados.
+Total: 19 commits em `review`. Todos locais, nunca pushados.
 
 ---
 
