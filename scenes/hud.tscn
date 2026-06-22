@@ -1,13 +1,12 @@
 [gd_scene format=3 uid="uid://c2321r7gwdtu7"]
 
-[ext_resource type="Script" uid="uid://lj45kq3li0wq" path="res://scripts/hud.gd" id="1_37p78"]
+[ext_resource type="Script" uid="uid://tmodmhjsqaek" path="res://scripts/hud.gd" id="1_37p78"]
 [ext_resource type="Texture2D" uid="uid://dnrpy5r3hjkxq" path="res://assets/sprites/Circulo_branco.png" id="2_5ysmq"]
 [ext_resource type="Theme" uid="uid://7f6wyokb7vpa" path="res://assets/theme/main_theme.tres" id="3_hud_theme"]
 
 [node name="HUD" type="PanelContainer" unique_id=2033374311]
-offset_right = 420.0
-offset_bottom = 480.0
-size_flags_horizontal = 3
+offset_right = 358.0
+offset_bottom = 508.0
 size_flags_vertical = 3
 theme = ExtResource("3_hud_theme")
 script = ExtResource("1_37p78")
@@ -38,12 +37,9 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.4
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 22
 text = "DIA 0"
 horizontal_alignment = 2
-
-[node name="HSep1" type="HSeparator" parent="Margin/VBoxRoot" unique_id=1570714682]
-layout_mode = 2
 
 [node name="SecaoMetricas" type="Label" parent="Margin/VBoxRoot" unique_id=7735123]
 layout_mode = 2
@@ -171,36 +167,11 @@ size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 text = "TOTAL DE AVES  0"
 
-[node name="HSep2" type="HSeparator" parent="Margin/VBoxRoot" unique_id=1343963877]
-layout_mode = 2
-
 [node name="SecaoAcoes" type="Label" parent="Margin/VBoxRoot" unique_id=1696963349]
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
 text = "ACOES DE CONTENCAO"
-
-[node name="BotoesAcoes" type="VBoxContainer" parent="Margin/VBoxRoot" unique_id=1063839739]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="BtnIsolar" type="Button" parent="Margin/VBoxRoot/BotoesAcoes" unique_id=1361372603]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "ISOLAR INFECTADOS"
-
-[node name="BtnVacinar" type="Button" parent="Margin/VBoxRoot/BotoesAcoes" unique_id=737907505]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "VACINAR"
-
-[node name="HSep3" type="HSeparator" parent="Margin/VBoxRoot" unique_id=341430480]
-layout_mode = 2
 
 [node name="SecaoAuto" type="Label" parent="Margin/VBoxRoot" unique_id=2093602197]
 layout_mode = 2
@@ -234,31 +205,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Encerrar simulacao automatica"
 text = "STOP"
-
-[node name="SliderVelLinha" type="HBoxContainer" parent="Margin/VBoxRoot" unique_id=77528196]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="LabelTituloVel" type="Label" parent="Margin/VBoxRoot/SliderVelLinha" unique_id=39982244]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_override_font_sizes/font_size = 13
-text = "VEL"
-
-[node name="SliderVelocidade" type="HSlider" parent="Margin/VBoxRoot/SliderVelLinha" unique_id=1117978603]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 28)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="LabelVel" type="Label" parent="Margin/VBoxRoot/SliderVelLinha" unique_id=468036030]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(60, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-theme_override_font_sizes/font_size = 13
-text = "1.5s/dia"
-horizontal_alignment = 2
 
 [node name="Spacer" type="Control" parent="Margin/VBoxRoot" unique_id=1942199614]
 layout_mode = 2

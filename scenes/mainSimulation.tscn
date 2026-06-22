@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://bk34ptpuc8law"]
 
-[ext_resource type="Script" uid="uid://bhq76c8334s48" path="res://scripts/main_simulation.gd" id="1_k6cwb"]
+[ext_resource type="Script" uid="uid://bbmsk4egenh04" path="res://scripts/main_simulation.gd" id="1_k6cwb"]
 [ext_resource type="PackedScene" uid="uid://b8pec1ggx470v" path="res://scenes/simulationView.tscn" id="1_ra0bp"]
 [ext_resource type="PackedScene" uid="uid://c2321r7gwdtu7" path="res://scenes/hud.tscn" id="2_ikh8g"]
 [ext_resource type="Theme" uid="uid://7f6wyokb7vpa" path="res://assets/theme/main_theme.tres" id="4_theme"]
+[ext_resource type="PackedScene" uid="uid://bbkwgoawdj8ip" path="res://scenes/configScreen.tscn" id="5_02g2u"]
 
 [node name="MainSimulation" type="Control" unique_id=726545992]
 layout_mode = 3
@@ -22,43 +23,31 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.071, 0.078, 0.094, 1)
+color = Color(0, 0, 0, 0.64705884)
 
-[node name="Layout" type="HBoxContainer" parent="ColorRect" unique_id=1553565247]
+[node name="ConfigScreen" parent="ColorRect" unique_id=41332062 instance=ExtResource("5_02g2u")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = -16.0
-offset_bottom = -16.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 16
+offset_left = 1496.0
+offset_top = 551.0
+offset_right = 1922.0
+offset_bottom = 804.0
 
-[node name="SidebarLeft" type="VBoxContainer" parent="ColorRect/Layout" unique_id=1089148218]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.74
-theme_override_constants/separation = 16
+[node name="HUD" parent="ColorRect" unique_id=848066805 instance=ExtResource("2_ikh8g")]
+layout_mode = 0
+offset_left = 1487.0
+offset_top = -2.0
+offset_right = 1919.0
+offset_bottom = 506.0
 
-[node name="SimulationView" type="MarginContainer" parent="ColorRect/Layout/SidebarLeft" unique_id=20178620]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="SimulationView" parent="ColorRect/Layout/SidebarLeft/SimulationView" unique_id=2097692704 instance=ExtResource("1_ra0bp")]
+[node name="SimulationView2" parent="ColorRect" unique_id=2097692704 instance=ExtResource("1_ra0bp")]
 unique_name_in_owner = true
-layout_mode = 2
-
-[node name="SidebarRight" type="VBoxContainer" parent="ColorRect/Layout" unique_id=693183602]
-custom_minimum_size = Vector2(420, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.26
-theme_override_constants/separation = 16
-
-[node name="HUD" parent="ColorRect/Layout/SidebarRight" unique_id=848066805 instance=ExtResource("2_ikh8g")]
-layout_mode = 2
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -2.0
+offset_top = 4.0
+offset_right = 1490.0
+offset_bottom = 1075.0
+grow_horizontal = 1
+grow_vertical = 1

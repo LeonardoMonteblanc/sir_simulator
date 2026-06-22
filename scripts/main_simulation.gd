@@ -1,9 +1,9 @@
 extends Control
 
-const AutoSimControllerScript = preload("res://scripts/core_extensions/auto_simulation/auto_simulation_controller.gd")
 
 @onready var view_simulacao: Control = $ColorRect/Layout/SidebarLeft/SimulationView/SimulationView
 @onready var hud_interface: PanelContainer = $ColorRect/Layout/SidebarRight/HUD
+var _auto_sim_ctrl: Node = null
 
 var parametros_globais: Dictionary = {}
 
@@ -58,11 +58,6 @@ func _escolher_origem_bfs() -> int:
 	#view_simulacao.renderizar_estado_atual()
 
 
-func _on_abrir_selector() -> void:
-	if not is_instance_valid(view_simulacao) or not is_instance_valid(view_simulacao.modelo_epidemiologico):
-		return
-	var modelo = view_simulacao.modelo_epidemiologico
-
 
 
 
@@ -102,7 +97,6 @@ func _montar_auto_sim() -> void:
 	if not is_instance_valid(view_simulacao):
 		return
 	# 1. cria e anexa o controller
-	_auto_sim_ctrl = AutoSimControllerScript.new()
 	_auto_sim_ctrl.name = "AutoSimController"
 	add_child(_auto_sim_ctrl)
 

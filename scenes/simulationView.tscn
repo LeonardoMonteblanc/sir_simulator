@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b8pec1ggx470v"]
 
-[ext_resource type="Script" uid="uid://bik2euydan0bc" path="res://scripts/simulation_view.gd" id="1_j14up"]
+[ext_resource type="Script" uid="uid://cvtca07nw82ly" path="res://scripts/simulation_view.gd" id="1_j14up"]
 [ext_resource type="Theme" uid="uid://7f6wyokb7vpa" path="res://assets/theme/main_theme.tres" id="3_theme"]
 
 [sub_resource type="Theme" id="Theme_yd6oq"]
@@ -14,62 +14,15 @@ grow_vertical = 2
 theme = ExtResource("3_theme")
 script = ExtResource("1_j14up")
 
-[node name="TopBar" type="HBoxContainer" parent="." unique_id=416845392]
-layout_mode = 0
-anchor_right = 1.0
-offset_left = 12.0
-offset_top = 8.0
-offset_right = -12.0
-offset_bottom = 44.0
-
-[node name="Title" type="Label" parent="TopBar" unique_id=977100802]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 20
-text = "REDE EPIDEMIOLOGICA"
-
-[node name="ZoomGroup" type="HBoxContainer" parent="TopBar" unique_id=797732244]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-size_flags_horizontal = 0
-theme_override_constants/separation = 4
-
-[node name="BtnZoomOut" type="Button" parent="TopBar/ZoomGroup" unique_id=615875641]
-custom_minimum_size = Vector2(36, 32)
-layout_mode = 2
-tooltip_text = "Diminuir zoom"
-text = "-"
-
-[node name="BtnZoomIn" type="Button" parent="TopBar/ZoomGroup" unique_id=1197998294]
-custom_minimum_size = Vector2(36, 32)
-layout_mode = 2
-tooltip_text = "Aumentar zoom"
-text = "+"
-
-[node name="BtnResetView" type="Button" parent="TopBar/ZoomGroup" unique_id=364202731]
-custom_minimum_size = Vector2(36, 32)
-layout_mode = 2
-tooltip_text = "Resetar visualizacao"
-text = "R"
-
-[node name="HSpacer" type="HSeparator" parent="." unique_id=671536361]
-layout_mode = 0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -50.0
-offset_bottom = -46.0
-grow_horizontal = 2
-grow_vertical = 0
-
 [node name="GraphContainer" type="PanelContainer" parent="." unique_id=1273582218]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 48.0
+offset_left = 2.0
+offset_top = -2.0
 offset_right = -8.0
-offset_bottom = -58.0
+offset_bottom = -13.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -79,89 +32,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource("Theme_yd6oq")
+scroll_offset = Vector2(-7, -15)
 panning_scheme = 1
 right_disconnects = true
 show_grid_buttons = false
-
-[node name="BottomBar" type="HBoxContainer" parent="." unique_id=1050078647]
-layout_mode = 0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 12.0
-offset_top = -50.0
-offset_right = -12.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="LegendaS" type="HBoxContainer" parent="BottomBar" unique_id=1641350571]
-custom_minimum_size = Vector2(0, 28)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="DotS" type="ColorRect" parent="BottomBar/LegendaS" unique_id=1160641394]
-custom_minimum_size = Vector2(14, 14)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.18, 0.62, 0.349, 1)
-
-[node name="LegS" type="Label" parent="BottomBar/LegendaS" unique_id=697356538]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Suscetivel"
-
-[node name="DotE" type="ColorRect" parent="BottomBar/LegendaS" unique_id=209044037]
-custom_minimum_size = Vector2(14, 14)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.98, 0.749, 0.141, 1)
-
-[node name="LegE" type="Label" parent="BottomBar/LegendaS" unique_id=52622836]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Exposto"
-
-[node name="DotI" type="ColorRect" parent="BottomBar/LegendaS" unique_id=1818476723]
-custom_minimum_size = Vector2(14, 14)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.937, 0.267, 0.267, 1)
-
-[node name="LegI" type="Label" parent="BottomBar/LegendaS" unique_id=1014876895]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Infectado"
-
-[node name="DotR" type="ColorRect" parent="BottomBar/LegendaS" unique_id=513414872]
-custom_minimum_size = Vector2(14, 14)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.231, 0.51, 0.965, 1)
-
-[node name="LegR" type="Label" parent="BottomBar/LegendaS" unique_id=1655541518]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Recuperado"
-
-[node name="DotD" type="ColorRect" parent="BottomBar/LegendaS" unique_id=1723590091]
-custom_minimum_size = Vector2(14, 14)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.5, 0.5, 0.5, 1)
-
-[node name="LegD" type="Label" parent="BottomBar/LegendaS" unique_id=25567062]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Morto"
-
-[node name="BtnPasso" type="Button" parent="BottomBar" unique_id=617543225]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 36)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-tooltip_text = "Avancar 1 dia na simulacao"
-theme_override_font_sizes/font_size = 14
-text = "PASSO"

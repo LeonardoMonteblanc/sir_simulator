@@ -1,53 +1,43 @@
 [gd_scene format=3 uid="uid://bbkwgoawdj8ip"]
 
-[ext_resource type="Script" uid="uid://cr6543epo633f" path="res://scripts/config_screen.gd" id="1_5gy0a"]
+[ext_resource type="Script" uid="uid://b2l27q8q5pwun" path="res://scripts/config_screen.gd" id="1_5gy0a"]
 
 [node name="ConfigScreen" type="Control" unique_id=41332062]
 layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_5gy0a")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1600093444]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1920.0
-offset_bottom = -1080.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_5gy0a")
 
-[node name="CenterContainer" type="CenterContainer" parent="." unique_id=379867874]
-custom_minimum_size = Vector2(500, 400)
-layout_mode = 1
-offset_left = 488.0
-offset_top = 174.0
-offset_right = 1488.0
-offset_bottom = 874.0
-
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer" unique_id=1600093444]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer" unique_id=537232851]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=537232851]
 layout_mode = 2
 theme_override_constants/separation = 20
-alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1593288600]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/VBoxContainer" unique_id=1593288600]
 layout_mode = 2
 theme_override_constants/h_separation = 15
 columns = 2
 
-[node name="LabelAves" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=1510373986]
+[node name="LabelAves" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=1510373986]
 layout_mode = 2
 text = "Aves:"
 
-[node name="SpinBoxAves" type="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=304541244]
+[node name="SpinBoxAves" type="SpinBox" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=304541244]
 layout_mode = 2
 min_value = 10.0
 value = 10.0
 
-[node name="LabelDoenca" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=955121989]
+[node name="LabelDoenca" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=955121989]
 layout_mode = 2
 text = "Doença: "
 
-[node name="OptionButtonDoenca" type="OptionButton" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=1866897336]
+[node name="OptionButtonDoenca" type="OptionButton" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=1866897336]
 layout_mode = 2
 selected = 0
 item_count = 4
@@ -60,28 +50,11 @@ popup/item_2/id = 2
 popup/item_3/text = "Bronquite"
 popup/item_3/id = 3
 
-[node name="LabelInfoDoenca" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=1866897337]
-unique_name_in_owner = true
-layout_mode = 2
-text = "β = 0.0  |  Letalidade: 0%"
-
-[node name="LabelVacinacao" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=466756023]
-layout_mode = 2
-text = "Vacinação (%): "
-
-[node name="HSliderVacina" type="HSlider" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=394955986]
-layout_mode = 2
-
-[node name="LabelValorVacina" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=394955987]
-unique_name_in_owner = true
-layout_mode = 2
-text = "0%"
-
-[node name="LabelLayout" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=64461007]
+[node name="LabelLayout" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=64461007]
 layout_mode = 2
 text = "Layout:"
 
-[node name="OptionButtonLayout" type="OptionButton" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=889199094]
+[node name="OptionButtonLayout" type="OptionButton" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=889199094]
 layout_mode = 2
 selected = 0
 item_count = 3
@@ -92,36 +65,11 @@ popup/item_1/id = 1
 popup/item_2/text = "two_poles"
 popup/item_2/id = 2
 
-[node name="SpinBoxSeed" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=889199095]
+[node name="LabelInfoDoenca" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1866897337]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Seed:"
+text = "β = 0.0  |  Letalidade: 0%"
 
-[node name="SpinBoxSeedValue" type="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=889199096]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="SpinBoxOvo" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=889199097]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Preço do ovo (R$):"
-
-[node name="SpinBoxOvoValue" type="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=889199098]
-unique_name_in_owner = true
-layout_mode = 2
-step = 0.01
-value = 1.0
-
-[node name="SpinBoxAve" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=889199099]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Valor por ave (R$):"
-
-[node name="SpinBoxAveValue" type="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/GridContainer" unique_id=889199100]
-unique_name_in_owner = true
-layout_mode = 2
-value = 30.0
-
-[node name="BtnIniciar" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1909650015]
+[node name="BtnIniciar" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1909650015]
 layout_mode = 2
 text = "Iniciar Simulação"

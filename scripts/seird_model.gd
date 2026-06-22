@@ -36,10 +36,8 @@ class Agente:
 	var id: int
 	var estado: SEIRDModel.Estado
 	var dias_estado: int
-	# duração da latência em dias
 	var dur_latencia: int
 	var dur_infeccao: int
-	var eh_femea: bool
 	var prod_ovos_dia: float
 	var viva: bool
 
@@ -124,9 +122,7 @@ func initialize(params: Dictionary, dict_adjacencia: Dictionary) -> void:
 		ag.dias_estado = 0
 		ag.dur_latencia = 0
 		ag.dur_infeccao = 0
-		ag.eh_femea = i < qtde_femeas
 		ag.viva = true
-		ag.prod_ovos_dia = 0.8 if ag.eh_femea else 0.0
 		agentes.append(ag)
 
 	if cob_vacina > 0.0:
