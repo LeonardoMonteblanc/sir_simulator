@@ -51,36 +51,42 @@ func _generate_single_pole(n: int, adj: Dictionary, pos: Dictionary):
 
 # Constrói dois clusters densos com conexões pontuais de peso reduzido entre eles
 func _generate_two_poles(n: int, adj: Dictionary, pos: Dictionary, rng: RandomNumberGenerator):
-	var metade = n/2
+	var metade: int = max(1, n / 2)
 	var raio_cluster = 150.0
 	var centro_a = Vector2(LARGURA_GRID * 0.25, ALTURA_GRID * 0.5)
 	var centro_b = Vector2(LARGURA_GRID * 0.75, ALTURA_GRID * 0.5)
-	
+
 	for i in range(n):
 		var centro = centro_a if i < metade else centro_b
 		var angulo = rng.randf() * TAU
 		var raio = rng.randf() * raio_cluster
-		
+
 		pos[i] = centro + Vector2(cos(angulo), sin(angulo)) * raio
-		
+
+	# se todos no mesmo polo (n pequeno), ainda conectar entre polos existentes
+	if n < 2:
+		return
+
+	var espaco_b: int = max(1, n - metade)
+
 	for i in range(n):
 		for j in range(i+1, n):
 			var mesmos_polos: bool = ((i < metade and j < metade) or (i >= metade and j >= metade))
-			
+
 			if mesmos_polos:
 				var dist = pos[i].distance_to(pos[j])
 				if dist < RAIO_CORTE_PADRAO:
 					adj[i].append({"neighbor_id": j})
 					adj[j].append({"neighbor_id": i})
-	
+
 	var pontes = rng.randi_range(2, 3)
-	
+
 	for p in range(pontes):
 		var no_a = rng.randi() % metade
-		var no_b = metade + (rng.randi() % (n-metade))
-		
+		var no_b = metade + (rng.randi() % espaco_b)
+
 		adj[no_a].append({"neighbor_id": no_b, "weight": 0.3})
-		adj[no_b].append({"neighbor_id": no_a,"weight":0.3})
+		adj[no_b].append({"neighbor_id": no_a, "weight": 0.3})
 
 # Distribui os nós aleatoriamente e pondera o peso de contágio inversamente à distância
 func _generate_free_range(n: int, adj: Dictionary, pos: Dictionary, rng: RandomNumberGenerator):

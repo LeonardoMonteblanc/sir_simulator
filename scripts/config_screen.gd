@@ -18,12 +18,19 @@ func _ready():
 	spin_seed.value = SimConfig.params.get("seed", 0)
 	spin_ovo.value = SimConfig.params.get("egg_price", 0.7)
 	spin_ave.value = SimConfig.params.get("bird_price", 30.0)
-	
+
 	opt_doenca.item_selected.connect(_on_doenca_selected)
 	slider_vacina.value_changed.connect(_on_slider_vacina_changed)
+	# quando muda num_agentes, atualiza num_femeas para manter proporcao
+	spin_aves.value_changed.connect(_on_aves_changed)
 	btn_iniciar.pressed.connect(_on_btn_iniciar_pressed)
-	
+
 	_on_doenca_selected(0)
+	_on_aves_changed(spin_aves.value)
+
+func _on_aves_changed(value: float) -> void:
+	# garante que num_femeas respeite a quantidade: nunca maior que num_agents
+	SimConfig.params["num_females"] = SimConfig.num_females_for(int(value))
 
 func _on_doenca_selected(index: int) -> void:
 	var doenca_nome = opt_doenca.get_item_text(index)
@@ -46,5 +53,7 @@ func _on_btn_iniciar_pressed():
 	SimConfig.params["seed"] = int(spin_seed.value)
 	SimConfig.params["egg_price"] = spin_ovo.value
 	SimConfig.params["bird_price"] = spin_ave.value
-	
+	# sempre recomputa num_femeas para nao permitir valores inconsistentes
+	SimConfig.params["num_females"] = SimConfig.num_females_for(SimConfig.params["num_agents"])
+
 	get_tree().change_scene_to_file("res://scenes/mainSimulation.tscn")

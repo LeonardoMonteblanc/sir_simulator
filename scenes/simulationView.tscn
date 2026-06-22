@@ -1,58 +1,167 @@
 [gd_scene format=3 uid="uid://b8pec1ggx470v"]
 
 [ext_resource type="Script" uid="uid://bik2euydan0bc" path="res://scripts/simulation_view.gd" id="1_j14up"]
-[ext_resource type="Texture2D" uid="uid://cihai1folp8mq" path="res://assets/sprites/fast-forward.png" id="2_yd6oq"]
+[ext_resource type="Theme" uid="uid://7f6wyokb7vpa" path="res://assets/theme/main_theme.tres" id="3_theme"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgiij"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 6
+[sub_resource type="Theme" id="Theme_yd6oq"]
 
-[node name="Control" type="Control" unique_id=268301110]
-layout_mode = 3
+[node name="SimulationView" type="Panel" unique_id=659524282]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -5.0
-offset_top = 5.0
-offset_right = -5.0
-offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+script = ExtResource("1_j14up")
+
+[node name="TopBar" type="HBoxContainer" parent="." unique_id=416845392]
+layout_mode = 0
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = 44.0
+
+[node name="Title" type="Label" parent="TopBar" unique_id=977100802]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "REDE EPIDEMIOLOGICA"
+
+[node name="ZoomGroup" type="HBoxContainer" parent="TopBar" unique_id=797732244]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 4
+
+[node name="BtnZoomOut" type="Button" parent="TopBar/ZoomGroup" unique_id=615875641]
+custom_minimum_size = Vector2(36, 32)
+layout_mode = 2
+tooltip_text = "Diminuir zoom"
+text = "-"
+
+[node name="BtnZoomIn" type="Button" parent="TopBar/ZoomGroup" unique_id=1197998294]
+custom_minimum_size = Vector2(36, 32)
+layout_mode = 2
+tooltip_text = "Aumentar zoom"
+text = "+"
+
+[node name="BtnResetView" type="Button" parent="TopBar/ZoomGroup" unique_id=364202731]
+custom_minimum_size = Vector2(36, 32)
+layout_mode = 2
+tooltip_text = "Resetar visualizacao"
+text = "R"
+
+[node name="HSpacer" type="HSeparator" parent="." unique_id=671536361]
+layout_mode = 0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -50.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="GraphContainer" type="PanelContainer" parent="." unique_id=1273582218]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 48.0
+offset_right = -8.0
+offset_bottom = -58.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SimulationView" type="Panel" parent="." unique_id=2107202372]
-layout_mode = 0
-script = ExtResource("1_j14up")
-
-[node name="GraphEdit" type="GraphEdit" parent="SimulationView" unique_id=1444548134]
-layout_mode = 0
-offset_right = 1000.0
-offset_bottom = 700.0
-scroll_offset = Vector2(-233, -117)
+[node name="GraphEdit" type="GraphEdit" parent="GraphContainer" unique_id=1476115569]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_yd6oq")
 panning_scheme = 1
 right_disconnects = true
 show_grid_buttons = false
 
-[node name="BtnPasso" type="Button" parent="SimulationView" unique_id=1628851604]
-custom_minimum_size = Vector2(20, 20)
+[node name="BottomBar" type="HBoxContainer" parent="." unique_id=1050078647]
 layout_mode = 0
-offset_left = 1138.0
-offset_top = 785.0
-offset_right = 1377.0
-offset_bottom = 832.0
-scale = Vector2(1, 0.9309045)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_dgiij")
-icon = ExtResource("2_yd6oq")
-autowrap_trim_flags = 192
-icon_alignment = 1
-expand_icon = true
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -50.0
+offset_right = -12.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="LegendaS" type="HBoxContainer" parent="BottomBar" unique_id=1641350571]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="DotS" type="ColorRect" parent="BottomBar/LegendaS" unique_id=1160641394]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.18, 0.62, 0.349, 1)
+
+[node name="LegS" type="Label" parent="BottomBar/LegendaS" unique_id=697356538]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Suscetivel"
+
+[node name="DotE" type="ColorRect" parent="BottomBar/LegendaS" unique_id=209044037]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.98, 0.749, 0.141, 1)
+
+[node name="LegE" type="Label" parent="BottomBar/LegendaS" unique_id=52622836]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Exposto"
+
+[node name="DotI" type="ColorRect" parent="BottomBar/LegendaS" unique_id=1818476723]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.937, 0.267, 0.267, 1)
+
+[node name="LegI" type="Label" parent="BottomBar/LegendaS" unique_id=1014876895]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Infectado"
+
+[node name="DotR" type="ColorRect" parent="BottomBar/LegendaS" unique_id=513414872]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.231, 0.51, 0.965, 1)
+
+[node name="LegR" type="Label" parent="BottomBar/LegendaS" unique_id=1655541518]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Recuperado"
+
+[node name="DotD" type="ColorRect" parent="BottomBar/LegendaS" unique_id=1723590091]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="LegD" type="Label" parent="BottomBar/LegendaS" unique_id=25567062]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Morto"
+
+[node name="BtnPasso" type="Button" parent="BottomBar" unique_id=617543225]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+tooltip_text = "Avancar 1 dia na simulacao"
+theme_override_font_sizes/font_size = 14
+text = "PASSO"

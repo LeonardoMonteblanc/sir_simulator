@@ -312,6 +312,9 @@ func _check_outbreak_over() -> bool:
 			return false
 	return true
 
+func is_outbreak_over() -> bool:
+	return _check_outbreak_over()
+
 func get_summary() -> Dictionary:
 	return {
 		"total_aves": agentes.size(),
@@ -342,7 +345,8 @@ func _get_infection_prob(ag: Agente, ids_infectados: Array) -> float:
 		var peso = viz.get("weight", 1.0)
 		# peso invalido vira 1.0
 		if not (peso is float) and not (peso is int):
-			peso = 1.0
+			var peso_num: float = float(peso) if typeof(peso) == TYPE_STRING and str(peso).is_valid_float() else 1.0
+			peso = peso_num
 		if ids_infectados.has(id_viz):
 			prod_nao_infeccao *= (1.0 - beta * peso)
 	return 1.0 - prod_nao_infeccao

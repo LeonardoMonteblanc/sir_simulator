@@ -12,8 +12,11 @@ const CORES_ESTADOS: Dictionary = {
 	SEIRDModel.Estado.D: Color(0.33, 0.33, 0.33),
 }
 
-@onready var editor_grafos: GraphEdit = $GraphEdit
-@onready var botao_passo: Button = $BtnPasso
+@onready var editor_grafos: GraphEdit = $GraphContainer/GraphEdit
+@onready var botao_passo: Button = $BottomBar/BtnPasso
+@onready var btn_zoom_in: Button = $TopBar/ZoomGroup/BtnZoomIn
+@onready var btn_zoom_out: Button = $TopBar/ZoomGroup/BtnZoomOut
+@onready var btn_reset_view: Button = $TopBar/ZoomGroup/BtnResetView
 
 # Hook opcional de auto-sim (injetado via injetar_autosim()). Se null, modo manual.
 var _autosim: Node = null
@@ -30,6 +33,12 @@ var parametros_globais: Dictionary = {}
 
 func _ready() -> void:
 	botao_passo.pressed.connect(_on_step_pressed)
+	if is_instance_valid(btn_zoom_in):
+		btn_zoom_in.pressed.connect(_on_zoom_in)
+	if is_instance_valid(btn_zoom_out):
+		btn_zoom_out.pressed.connect(_on_zoom_out)
+	if is_instance_valid(btn_reset_view):
+		btn_reset_view.pressed.connect(_on_reset_view)
 	# SimConfig e o singleton de parametros; se nao existir, usa fallback
 	if Engine.has_singleton("SimConfig") or (_singleton_exists("SimConfig")):
 		parametros_globais = SimConfig.params
@@ -120,6 +129,22 @@ func _construir_rede_grafica(adj: Dictionary, pos: Dictionary) -> void:
 
 	editor_grafos.arrange_nodes()
 
+func _on_zoom_in() -> void:
+	if not is_instance_valid(editor_grafos):
+		return
+	editor_grafos.zoom = min(editor_grafos.zoom * 1.2, 4.0)
+
+func _on_zoom_out() -> void:
+	if not is_instance_valid(editor_grafos):
+		return
+	editor_grafos.zoom = max(editor_grafos.zoom * 0.8, 0.25)
+
+func _on_reset_view() -> void:
+	if not is_instance_valid(editor_grafos):
+		return
+	editor_grafos.zoom = 1.0
+	editor_grafos.offset = Vector2.ZERO
+
 func _on_step_pressed() -> void:
 	if not is_instance_valid(modelo_epidemiologico):
 		return
@@ -133,7 +158,7 @@ func _on_step_pressed() -> void:
 
 	passo_concluido.emit(dados_passo_atual)
 
-	if modelo_epidemiologico._check_outbreak_over():
+	if modelo_epidemiologico.is_outbreak_over():
 		botao_passo.disabled = true
 		surto_encerrado.emit()
 		# encerra simulacao automatica se estiver ativa
@@ -193,21 +218,12 @@ func get_registry() -> Node:
 
 # quando um agente muda de estado no modelo, atualiza a cor base no registry
 # assim o "reset" restaura a cor certa
-func _sincronizar_cor_base(id: int) -> void:
-	if not is_instance_valid(_graph_registry):
-		return
-	if not _graph_registry.has_method("registrar"):
-		return
-	var n: GraphNode = get_node_or_null(str(id)) as GraphNode
-	if n == null:
-		return
-	# so atualiza se nao ha marcacao de algoritmo ativa
-	if not (_graph_registry.has_method("get_node_by_id")):
-		return
-	# mantem a cor visivel agora no no
-	# (registry ja guarda cor_base no registro, ela nao muda com SEIRD)
-	# mas se quiser "redefinir base" apos SEIRD update:
-	# nao fazemos aqui - o reset geral re-aplica cor base via resetar_cores_base
+func _sincronizar_cor_base(_id: int) -> void:
+	# Stub mantido para compatibilidade: a cor base dos nos e registrada
+	# no registry em _construir_rede_grafica e restaurada via resetar_cores_algoritmo.
+	# Esta funcao deliberadamente nao altera modulate a cada step para nao
+	# sobrescrever marcacoes de algoritmo (BFS/DFS/Dijkstra).
+	pass
 
 func renderizar_estado_atual() -> void:
 	if not is_instance_valid(modelo_epidemiologico):
@@ -216,9 +232,8 @@ func renderizar_estado_atual() -> void:
 		var no_agente: GraphNode = editor_grafos.get_node_or_null(str(agente.id)) as GraphNode
 		if no_agente != null:
 			no_agente.self_modulate = CORES_ESTADOS.get(agente.estado, Color.WHITE)
-	# tambem restaura as conexoes caso o modelo tenha sido modificado
-	# (ex: apos isolamento)
-	if not is_instance_valid(modelo_epidemiologico.adjacencia):
+	# evita re-aplicar adjacencia vazia quando o modelo ainda nao foi inicializado
+	if modelo_epidemiologico.adjacencia == null or modelo_epidemiologico.adjacencia.is_empty():
 		return
 	atualizar_adjacencia_visual(modelo_epidemiologico.adjacencia)
 

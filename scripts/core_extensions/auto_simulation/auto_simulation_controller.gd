@@ -46,8 +46,8 @@ func pause_simulation() -> void:
 func resume() -> void:
 	if not is_instance_valid(_timer):
 		return
-	# se nao estava rodando, comeca do zero
-	if _timer.time_left <= 0.0 and not _rodando:
+	# se nao estava rodando, comeca do zero com a velocidade atual
+	if not _rodando or _timer.is_stopped():
 		start(_timer.wait_time)
 		return
 	_timer.paused = false

@@ -2,287 +2,272 @@
 
 [ext_resource type="Script" uid="uid://lj45kq3li0wq" path="res://scripts/hud.gd" id="1_37p78"]
 [ext_resource type="Texture2D" uid="uid://dnrpy5r3hjkxq" path="res://assets/sprites/Circulo_branco.png" id="2_5ysmq"]
-[ext_resource type="FontFile" uid="uid://b6qnfmes4efvy" path="res://assets/fonts/Domine-SemiBold.ttf" id="2_oo0fn"]
+[ext_resource type="Theme" uid="uid://7f6wyokb7vpa" path="res://assets/theme/main_theme.tres" id="3_hud_theme"]
 
-[sub_resource type="SystemFont" id="SystemFont_6fi6k"]
-subpixel_positioning = 0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uo2fv"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(1, 1, 1, 0.75)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_047uy"]
-
-[sub_resource type="Theme" id="Theme_5pdws"]
-Label/colors/font_color = Color(1, 1, 1, 1)
-Label/colors/font_outline_color = Color(0, 0, 0, 1)
-Label/colors/font_shadow_color = Color(0, 0, 0, 0)
-Label/constants/line_spacing = 3
-Label/constants/outline_size = 0
-Label/constants/shadow_offset_x = 1
-Label/constants/shadow_offset_y = 1
-Label/constants/shadow_outline_size = 1
-Label/font_sizes/font_size = 20
-Label/fonts/font = SubResource("SystemFont_6fi6k")
-Label/styles/focus = SubResource("StyleBoxFlat_uo2fv")
-Label/styles/normal = SubResource("StyleBoxEmpty_047uy")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5pdws"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 6
-
-[sub_resource type="Theme" id="Theme_5ysmq"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fi6k"]
-bg_color = Color(0.75, 0.19, 0.13, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 6
-shadow_color = Color(1, 1, 1, 0.6)
-shadow_size = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_047uy"]
-bg_color = Color(0.13, 0.33, 0.67, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 6
-shadow_color = Color(1, 1, 1, 0.6)
-shadow_size = 1
-
-[node name="HUD" type="PanelContainer" unique_id=1379240923]
-offset_right = 398.0
-offset_bottom = 200.0
-size_flags_horizontal = 0
+[node name="HUD" type="PanelContainer" unique_id=2033374311]
+offset_right = 420.0
+offset_bottom = 480.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("3_hud_theme")
 script = ExtResource("1_37p78")
 
-[node name="GridMetricas" type="Panel" parent="." unique_id=729377901]
+[node name="Margin" type="MarginContainer" parent="." unique_id=846450059]
 layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
 
-[node name="GridContainer" type="GridContainer" parent="GridMetricas" unique_id=1152760403]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 40.0
-offset_right = 168.0
-offset_bottom = 196.0
-columns = 2
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="GridMetricas/GridContainer" unique_id=2019891700]
-custom_minimum_size = Vector2(16, 156)
+[node name="VBoxRoot" type="VBoxContainer" parent="Margin" unique_id=8940148]
 layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="TextureRect" type="TextureRect" parent="GridMetricas/GridContainer/VBoxContainer2" unique_id=1404863495]
-self_modulate = Color(0.18, 0.54, 0.31, 1)
-layout_mode = 2
-texture = ExtResource("2_5ysmq")
-expand_mode = 5
-stretch_mode = 6
-
-[node name="TextureRect2" type="TextureRect" parent="GridMetricas/GridContainer/VBoxContainer2" unique_id=52700484]
-self_modulate = Color(0.88, 0.56, 0.13, 1)
-layout_mode = 2
-texture = ExtResource("2_5ysmq")
-expand_mode = 5
-stretch_mode = 6
-
-[node name="TextureRect5" type="TextureRect" parent="GridMetricas/GridContainer/VBoxContainer2" unique_id=1438808852]
-self_modulate = Color(0.75, 0.19, 0.13, 1)
-layout_mode = 2
-texture = ExtResource("2_5ysmq")
-expand_mode = 5
-stretch_mode = 6
-
-[node name="TextureRect4" type="TextureRect" parent="GridMetricas/GridContainer/VBoxContainer2" unique_id=1804684583]
-self_modulate = Color(0.13, 0.33, 0.67, 1)
-layout_mode = 2
-texture = ExtResource("2_5ysmq")
-expand_mode = 5
-stretch_mode = 6
-
-[node name="TextureRect3" type="TextureRect" parent="GridMetricas/GridContainer/VBoxContainer2" unique_id=1729217474]
-self_modulate = Color(0.33, 0.33, 0.33, 1)
-layout_mode = 2
-texture = ExtResource("2_5ysmq")
-expand_mode = 5
-stretch_mode = 6
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GridMetricas/GridContainer" unique_id=1467206362]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="LabelSuscetiveis" type="Label" parent="GridMetricas/GridContainer/VBoxContainer" unique_id=1248019908]
-unique_name_in_owner = true
-layout_mode = 2
-text = "SUSCETIVEIS"
-vertical_alignment = 1
-uppercase = true
-
-[node name="LabelExpostos" type="Label" parent="GridMetricas/GridContainer/VBoxContainer" unique_id=1248019910]
-unique_name_in_owner = true
-layout_mode = 2
-text = "EXPOSTOS"
-vertical_alignment = 1
-uppercase = true
-
-[node name="LabelInfectados" type="Label" parent="GridMetricas/GridContainer/VBoxContainer" unique_id=1547741738]
-unique_name_in_owner = true
-layout_mode = 2
-text = "INFECTADOS"
-vertical_alignment = 1
-uppercase = true
-
-[node name="LabelRecuperados" type="Label" parent="GridMetricas/GridContainer/VBoxContainer" unique_id=1654187387]
-unique_name_in_owner = true
-layout_mode = 2
-text = "RECUPERADOS"
-vertical_alignment = 1
-uppercase = true
-
-[node name="LabelMortos" type="Label" parent="GridMetricas/GridContainer/VBoxContainer" unique_id=672423998]
-unique_name_in_owner = true
-layout_mode = 2
-text = "MORTOS"
-vertical_alignment = 1
-uppercase = true
-
-[node name="LabelStatus" type="Label" parent="GridMetricas" unique_id=1241781347]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -72.0
-offset_top = 7.0
-offset_right = 75.0
-offset_bottom = 30.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-theme = SubResource("Theme_5pdws")
-theme_override_fonts/font = ExtResource("2_oo0fn")
-text = "ESTATISTICAS"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HSeparator2" type="HSeparator" parent="GridMetricas" unique_id=1729746917]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -193.0
-offset_top = 32.0
-offset_right = 190.0
-offset_bottom = 36.0
-grow_horizontal = 2
-
-[node name="BtnEncerrar" type="Button" parent="GridMetricas" unique_id=551053325]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 16.0
-offset_top = 168.0
-offset_right = 180.0
-offset_bottom = 191.0
-size_flags_vertical = 10
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_5pdws")
-text = "ENCERRAR SIMULAÇÃO"
-autowrap_trim_flags = 192
-
-[node name="HSeparator" type="VSeparator" parent="GridMetricas" unique_id=1829933436]
-layout_mode = 0
-offset_top = 32.0
-offset_right = 400.0
-offset_bottom = 200.0
-metadata/_edit_lock_ = true
-
-[node name="GridContainer2" type="GridContainer" parent="GridMetricas" unique_id=182121820]
-layout_mode = 0
-offset_left = 216.0
-offset_top = 40.0
-offset_right = 384.0
-offset_bottom = 160.0
-theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 24
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GridMetricas/GridContainer2" unique_id=592472690]
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="BtnIsolar" type="Button" parent="GridMetricas/GridContainer2/VBoxContainer" unique_id=553601197]
+[node name="Header" type="HBoxContainer" parent="Margin/VBoxRoot" unique_id=1320281947]
+layout_mode = 2
+
+[node name="LabelStatus" type="Label" parent="Margin/VBoxRoot/Header" unique_id=196410831]
 unique_name_in_owner = true
 layout_mode = 2
-theme = SubResource("Theme_5ysmq")
-theme_type_variation = &"FlatButton"
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_6fi6k")
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "ESTATISTICAS"
+
+[node name="LabelDia" type="Label" parent="Margin/VBoxRoot/Header" unique_id=1573166337]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_font_sizes/font_size = 16
+text = "DIA 0"
+horizontal_alignment = 2
+
+[node name="HSep1" type="HSeparator" parent="Margin/VBoxRoot" unique_id=1570714682]
+layout_mode = 2
+
+[node name="SecaoMetricas" type="Label" parent="Margin/VBoxRoot" unique_id=7735123]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "POPULACAO POR ESTADO"
+
+[node name="GridMetricas" type="GridContainer" parent="Margin/VBoxRoot" unique_id=1703359995]
+layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="ColunaIcones" type="VBoxContainer" parent="Margin/VBoxRoot/GridMetricas" unique_id=771926595]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IconS" type="TextureRect" parent="Margin/VBoxRoot/GridMetricas/ColunaIcones" unique_id=1912590125]
+self_modulate = Color(0.18, 0.62, 0.349, 1)
+custom_minimum_size = Vector2(30, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_5ysmq")
+expand_mode = 5
+stretch_mode = 6
+
+[node name="IconE" type="TextureRect" parent="Margin/VBoxRoot/GridMetricas/ColunaIcones" unique_id=813554853]
+self_modulate = Color(0.98, 0.749, 0.141, 1)
+custom_minimum_size = Vector2(30, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_5ysmq")
+expand_mode = 5
+stretch_mode = 6
+
+[node name="IconI" type="TextureRect" parent="Margin/VBoxRoot/GridMetricas/ColunaIcones" unique_id=2115399130]
+self_modulate = Color(0.937, 0.267, 0.267, 1)
+custom_minimum_size = Vector2(30, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_5ysmq")
+expand_mode = 5
+stretch_mode = 6
+
+[node name="IconR" type="TextureRect" parent="Margin/VBoxRoot/GridMetricas/ColunaIcones" unique_id=511940133]
+self_modulate = Color(0.231, 0.51, 0.965, 1)
+custom_minimum_size = Vector2(30, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_5ysmq")
+expand_mode = 5
+stretch_mode = 6
+
+[node name="IconD" type="TextureRect" parent="Margin/VBoxRoot/GridMetricas/ColunaIcones" unique_id=883553253]
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+custom_minimum_size = Vector2(30, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_5ysmq")
+expand_mode = 5
+stretch_mode = 6
+
+[node name="ColunaValores" type="VBoxContainer" parent="Margin/VBoxRoot/GridMetricas" unique_id=1350465354]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="LinhaS" type="HBoxContainer" parent="Margin/VBoxRoot/GridMetricas/ColunaValores" unique_id=1317494953]
+layout_mode = 2
+
+[node name="LabelSuscetiveis" type="Label" parent="Margin/VBoxRoot/GridMetricas/ColunaValores/LinhaS" unique_id=798550138]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "SUSCETIVEIS  0"
+
+[node name="LinhaE" type="HBoxContainer" parent="Margin/VBoxRoot/GridMetricas/ColunaValores" unique_id=1473499348]
+layout_mode = 2
+
+[node name="LabelExpostos" type="Label" parent="Margin/VBoxRoot/GridMetricas/ColunaValores/LinhaE" unique_id=1885403205]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "EXPOSTOS  0"
+
+[node name="LinhaI" type="HBoxContainer" parent="Margin/VBoxRoot/GridMetricas/ColunaValores" unique_id=1107610596]
+layout_mode = 2
+
+[node name="LabelInfectados" type="Label" parent="Margin/VBoxRoot/GridMetricas/ColunaValores/LinhaI" unique_id=265869119]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "INFECTADOS  0"
+
+[node name="LinhaR" type="HBoxContainer" parent="Margin/VBoxRoot/GridMetricas/ColunaValores" unique_id=1034918788]
+layout_mode = 2
+
+[node name="LabelRecuperados" type="Label" parent="Margin/VBoxRoot/GridMetricas/ColunaValores/LinhaR" unique_id=832188459]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "RECUPERADOS  0"
+
+[node name="LinhaD" type="HBoxContainer" parent="Margin/VBoxRoot/GridMetricas/ColunaValores" unique_id=340052962]
+layout_mode = 2
+
+[node name="LabelMortos" type="Label" parent="Margin/VBoxRoot/GridMetricas/ColunaValores/LinhaD" unique_id=482396434]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "MORTOS  0"
+
+[node name="LinhaAves" type="HBoxContainer" parent="Margin/VBoxRoot/GridMetricas" unique_id=936059836]
+layout_mode = 2
+
+[node name="LabelAves" type="Label" parent="Margin/VBoxRoot/GridMetricas/LinhaAves" unique_id=2090587178]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "TOTAL DE AVES  0"
+
+[node name="HSep2" type="HSeparator" parent="Margin/VBoxRoot" unique_id=1343963877]
+layout_mode = 2
+
+[node name="SecaoAcoes" type="Label" parent="Margin/VBoxRoot" unique_id=1696963349]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "ACOES DE CONTENCAO"
+
+[node name="BotoesAcoes" type="VBoxContainer" parent="Margin/VBoxRoot" unique_id=1063839739]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BtnIsolar" type="Button" parent="Margin/VBoxRoot/BotoesAcoes" unique_id=1361372603]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
 text = "ISOLAR INFECTADOS"
-autowrap_trim_flags = 192
 
-[node name="BtnVacinar" type="Button" parent="GridMetricas/GridContainer2/VBoxContainer" unique_id=585678939]
+[node name="BtnVacinar" type="Button" parent="Margin/VBoxRoot/BotoesAcoes" unique_id=737907505]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-theme = SubResource("Theme_5ysmq")
-theme_type_variation = &"FlatButton"
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_047uy")
+size_flags_horizontal = 3
 text = "VACINAR"
-autowrap_trim_flags = 192
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GridMetricas/GridContainer2" unique_id=1677771410]
+[node name="HSep3" type="HSeparator" parent="Margin/VBoxRoot" unique_id=341430480]
 layout_mode = 2
 
-[node name="LabelDia" type="Label" parent="GridMetricas/GridContainer2/HBoxContainer" unique_id=1241781348]
+[node name="SecaoAuto" type="Label" parent="Margin/VBoxRoot" unique_id=2093602197]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "SIMULACAO AUTOMATICA"
+
+[node name="BotoesAuto" type="HBoxContainer" parent="Margin/VBoxRoot" unique_id=740127315]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BtnPlay" type="Button" parent="Margin/VBoxRoot/BotoesAuto" unique_id=1879189416]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "DIA"
-vertical_alignment = 1
-uppercase = true
+tooltip_text = "Iniciar simulacao automatica"
+text = "PLAY"
 
-[node name="LabelAves" type="Label" parent="GridMetricas/GridContainer2/HBoxContainer" unique_id=1248019909]
+[node name="BtnPause" type="Button" parent="Margin/VBoxRoot/BotoesAuto" unique_id=1329854216]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "AVES"
-vertical_alignment = 1
-uppercase = true
+tooltip_text = "Pausar simulacao automatica"
+text = "PAUSE"
+
+[node name="BtnStop" type="Button" parent="Margin/VBoxRoot/BotoesAuto" unique_id=1687391243]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Encerrar simulacao automatica"
+text = "STOP"
+
+[node name="SliderVelLinha" type="HBoxContainer" parent="Margin/VBoxRoot" unique_id=77528196]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LabelTituloVel" type="Label" parent="Margin/VBoxRoot/SliderVelLinha" unique_id=39982244]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 13
+text = "VEL"
+
+[node name="SliderVelocidade" type="HSlider" parent="Margin/VBoxRoot/SliderVelLinha" unique_id=1117978603]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelVel" type="Label" parent="Margin/VBoxRoot/SliderVelLinha" unique_id=468036030]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 13
+text = "1.5s/dia"
+horizontal_alignment = 2
+
+[node name="Spacer" type="Control" parent="Margin/VBoxRoot" unique_id=1942199614]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnEncerrar" type="Button" parent="Margin/VBoxRoot" unique_id=464912824]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "ENCERRAR SIMULACAO"
