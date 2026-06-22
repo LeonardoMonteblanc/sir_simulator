@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://xwaf58mexhn3"]
+[gd_scene format=3 uid="uid://xwaf58mexhn3"]
 
 [ext_resource type="Script" uid="uid://cenvpwtkv3boi" path="res://scripts/relatorio.gd" id="1_relatorio"]
 [ext_resource type="Theme" path="res://assets/theme/main_theme.tres" id="2_relatorio_theme"]

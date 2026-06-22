@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cgr4pc4rrsttw"]
+[gd_scene format=3 uid="uid://cgr4pc4rrsttw"]
 
 [ext_resource type="Script" path="res://scripts/core_extensions/graph_algorithms/graph_control_panel.gd" id="1_gc"]
 [ext_resource type="Theme" path="res://assets/theme/main_theme.tres" id="2_gcp_theme"]
