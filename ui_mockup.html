@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Mockup UI SEIRD</title>
+  <style>
+    body {margin:0; font-family:Arial,Helvetica,sans-serif; background:#000; color:#fff;}
+    .container {display:flex; height:100vh;}
+    .sim-view {flex:0 0 78%; background:#111; margin:12px; position:relative;}
+    .config {flex:0 0 22%; background:#222; margin:12px; padding:12px; overflow-y:auto;}
+    .hud {position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.6); padding:8px 12px; border-radius:4px;}
+    .hud span {display:inline-block; min-width:120px; margin-right:12px;}
+    .hud .sus {color:#10B981;}
+    .hud .exp {color:#F59E0B;}
+    .hud .inf {color:#EF4444;}
+    .hud .rec {color:#3B82F6;}
+    .hud .dead {color:#000;}
+    .grid {display:grid; grid-template-columns: auto 1fr auto; gap:12px;}
+    .grid label {align-self:center;}
+    .grid input, .grid select, .grid button {width:100%;}
+    button {background:#333; color:#fff; border:none; padding:8px; cursor:pointer;}
+    button:hover {background:#444;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="sim-view">
+    <div class="hud">
+      <span class="sus">Suscetíveis: 0</span>
+      <span class="exp">Expostos: 0</span>
+      <span class="inf">Infectados: 0</span>
+      <span class="rec">Recuperados: 0</span>
+      <span class="dead">Mortos: 0</span>
+    </div>
+    <!-- placeholder for graph -->
+  </div>
+  <div class="config">
+    <h2>Configurações</h2>
+    <div class="grid">
+      <label>Aves:</label><input type="number" min="10" value="10"><span></span>
+      <label>Doença:</label><select><option>Newcastle</option><option>HPAI H5N1</option><option>Marek</option><option>Bronquite</option></select><span></span>
+      <label>Vacinação (%):</label><input type="range" min="0" max="100" value="0"><span>0%</span>
+      <label>Layout:</label><select><option>solto</option><option>single_pole</option><option>two_poles</option></select><span></span>
+      <label>Seed:</label><input type="number" value="0"><span></span>
+      <label>Preço do ovo (R$):</label><input type="number" step="0.01" value="1.00"><span></span>
+      <label>Valor por ave (R$):</label><input type="number" value="30"><span></span>
+    </div>
+    <button>Iniciar Simulação</button>
+  </div>
+</div>
+</body>
+</html>
