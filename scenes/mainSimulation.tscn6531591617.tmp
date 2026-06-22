@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bk34ptpuc8law"]
+
+[ext_resource type="Script" uid="uid://bhq76c8334s48" path="res://scripts/main_simulation.gd" id="1_k6cwb"]
+[ext_resource type="PackedScene" uid="uid://b8pec1ggx470v" path="res://scenes/simulationView.tscn" id="1_ra0bp"]
+[ext_resource type="PackedScene" uid="uid://c2321r7gwdtu7" path="res://scenes/hud.tscn" id="2_ikh8g"]
+
+[node name="MainSimulation" type="Control" unique_id=1919198253]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1633.0
+offset_bottom = 1003.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_k6cwb")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2047089110]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 52.0
+offset_bottom = -253.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HUD" parent="ColorRect" unique_id=1379240923 instance=ExtResource("2_ikh8g")]
+top_level = true
+layout_mode = 0
+offset_left = 1286.0
+offset_top = 3.0
+offset_right = 1685.0
+offset_bottom = 223.0
+
+[node name="SimulationView" parent="ColorRect" unique_id=1680640300 instance=ExtResource("1_ra0bp")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -625.0
+offset_top = 1.0
+offset_right = -625.0
+offset_bottom = 1.0
+grow_horizontal = 1
+grow_vertical = 1
