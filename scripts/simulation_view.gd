@@ -9,59 +9,45 @@ const CORES_ESTADOS: Dictionary = {
 }
 
 @onready var editor_grafos: GraphEdit = $GraphContainer/GraphEdit
-
-
-
-# Hook opcional de auto-sim (injetado via injetar_autosim()). Se null, modo manual.
 var _autosim: Node = null
-
-# Hook opcional de registry de grafo (injetado via injetar_registry()).
-# Usado por algoritmos de grafo (BFS/DFS/Dijkstra).
 var _graph_registry: Node = null
 
 signal passo_concluido(dados_dia: Dictionary)
 signal surto_encerrado
 
 var modelo_epidemiologico: SEIRDModel
-var parametros_globais: Dictionary = {}
 
 func _ready() -> void:
-	#parametros_globais = SimConfig.params
 	limpar_simulacao()
 
+func inicializar_com_config(config: Dictionary) -> void:
+	limpar_simulacao()
+	
 	var gerador_redes := GraphGenerator.new()
-	var num_agentes: int = int(parametros_globais.get("num_agents", 0))
-	var layout: String = str(parametros_globais.get("layout_galinheiro", "free_range"))
+	var num_agentes = config.get("num_agents", 10)
+	var layout = config.get("layout", "solto")
+	var disease = config.get("disease", "Newcastle")
+	
 	var resultado_grafo: Dictionary = gerador_redes.generate(num_agentes, layout)
-
+	
 	var malha_adjacencia: Dictionary = resultado_grafo.get("adjacency", {})
 	var coordenadas_nos: Dictionary = resultado_grafo.get("positions", {})
-
-	if modelo_epidemiologico == null:
-		modelo_epidemiologico = SEIRDModel.new()
-		modelo_epidemiologico.initialize(parametros_globais, malha_adjacencia)
-
+	var params = {
+		"num_agents": num_agentes,
+		"disease": disease
+	}
+	modelo_epidemiologico = SEIRDModel.new()
+	modelo_epidemiologico.initialize(params, malha_adjacencia)
+	
 	_construir_rede_grafica(malha_adjacencia, coordenadas_nos)
 
 
 func _construir_rede_grafica(adj: Dictionary, pos: Dictionary) -> void:
 	limpar_simulacao()
 
-	if not is_instance_valid(modelo_epidemiologico):
-		return
-
 	var lista_agentes: Array = modelo_epidemiologico.agentes
 	var nos_por_id: Dictionary = {}
 
-	# informa registry opcional (caso algoritmo queira iterar depois)
-	if is_instance_valid(_graph_registry) and _graph_registry.has_method("limpar"):
-		_graph_registry.limpar()
-	if is_instance_valid(_graph_registry) and _graph_registry.has_method("set_adjacencia"):
-		_graph_registry.set_adjacencia(adj)
-	if is_instance_valid(_graph_registry) and _graph_registry.has_method("set_cores_seird"):
-		_graph_registry.set_cores_seird(CORES_ESTADOS)
-
-	# cria um GraphNode por agente
 	for agente_obj in lista_agentes:
 		var no_agente := GraphNode.new()
 		var id_str: String = str(agente_obj.id)
@@ -121,7 +107,21 @@ func _on_reset_view() -> void:
 	editor_grafos.zoom = 1.0
 	editor_grafos.offset = Vector2.ZERO
 
-func _on_step_pressed() -> void:
+
+# Injeta controller de auto-sim (AutoSimulationController). Idempotente.
+func injetar_autosim(controller: Node) -> void:
+	if _autosim == controller:
+		return
+	# desconecta anterior
+	if is_instance_valid(_autosim) and _autosim.has_signal("tick"):
+		if _autosim.tick.is_connected(_on_autosim_tick):
+			_autosim.tick.disconnect(_on_autosim_tick)
+	_autosim = controller
+	if is_instance_valid(_autosim):
+		if _autosim.has_signal("tick") and not _autosim.tick.is_connected(_on_autosim_tick):
+			_autosim.tick.connect(_on_autosim_tick)
+
+func _on_autosim_tick() -> void:
 	if not is_instance_valid(modelo_epidemiologico):
 		return
 
@@ -138,19 +138,6 @@ func _on_step_pressed() -> void:
 		surto_encerrado.emit()
 		# encerra simulacao automatica se estiver ativa
 		stop_autosim()
-
-# Injeta controller de auto-sim (AutoSimulationController). Idempotente.
-func injetar_autosim(controller: Node) -> void:
-	if _autosim == controller:
-		return
-	# desconecta anterior
-	if is_instance_valid(_autosim) and _autosim.has_signal("tick"):
-		if _autosim.tick.is_connected(_on_step_pressed):
-			_autosim.tick.disconnect(_on_step_pressed)
-	_autosim = controller
-	if is_instance_valid(_autosim):
-		if _autosim.has_signal("tick") and not _autosim.tick.is_connected(_on_step_pressed):
-			_autosim.tick.connect(_on_step_pressed)
 
 # Hooks publicos de play/pause/stop consumidos pelo control_panel.
 func start_autosim(speed_seconds: float = 1.0) -> void:
@@ -180,7 +167,6 @@ func set_speed_autosim(speed_seconds: float) -> void:
 
 func has_autosim() -> bool:
 	return is_instance_valid(_autosim)
-
 
 
 func renderizar_estado_atual() -> void:
@@ -214,4 +200,5 @@ func limpar_simulacao() -> void:
 		if no_filho is GraphNode:
 			editor_grafos.remove_child(no_filho)
 			no_filho.queue_free()
+	editor_grafos.queue_redraw()
 	editor_grafos.queue_redraw()

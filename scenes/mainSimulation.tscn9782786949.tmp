@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://bk34ptpuc8law"]
+
+[ext_resource type="Script" uid="uid://b2l27q8q5pwun" path="res://scripts/config_screen.gd" id="1_13n26"]
+
+[node name="ConfigScreen" type="Control" unique_id=41332062]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_13n26")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1600093444]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=537232851]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/VBoxContainer" unique_id=1593288600]
+layout_mode = 2
+theme_override_constants/h_separation = 15
+columns = 2
+
+[node name="LabelAves" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=1510373986]
+layout_mode = 2
+text = "Aves:"
+
+[node name="SpinBoxAves" type="SpinBox" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=304541244]
+layout_mode = 2
+min_value = 10.0
+value = 10.0
+
+[node name="LabelDoenca" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=955121989]
+layout_mode = 2
+text = "Doença: "
+
+[node name="OptionButtonDoenca" type="OptionButton" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=1866897336]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Newcastle"
+popup/item_0/id = 0
+popup/item_1/text = "HPAI H5N1"
+popup/item_1/id = 1
+popup/item_2/text = "Marek"
+popup/item_2/id = 2
+popup/item_3/text = "Bronquite"
+popup/item_3/id = 3
+
+[node name="LabelLayout" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=64461007]
+layout_mode = 2
+text = "Layout:"
+
+[node name="OptionButtonLayout" type="OptionButton" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=889199094]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "solto"
+popup/item_0/id = 0
+popup/item_1/text = "single_pole"
+popup/item_1/id = 1
+popup/item_2/text = "two_poles"
+popup/item_2/id = 2
+
+[node name="LabelInfoDoenca" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1866897337]
+unique_name_in_owner = true
+layout_mode = 2
+text = "β = 0.0  |  Letalidade: 0%"
+
+[node name="BtnIniciar" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1909650015]
+layout_mode = 2
+text = "Iniciar Simulação"

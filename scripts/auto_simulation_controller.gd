@@ -34,7 +34,7 @@ func _ready() -> void:
 func start(speed_seconds: float = 1.0) -> void:
 	if not is_instance_valid(_timer):
 		_ready()
-	_timer.wait_time = maxf(speed_seconds, 0.05)  # limite minimo pra nao fritar cpu
+	_timer.wait_time = maxf(speed_seconds, 0.05)
 	_timer.start()
 	_rodando = true
 
@@ -46,7 +46,6 @@ func pause_simulation() -> void:
 func resume() -> void:
 	if not is_instance_valid(_timer):
 		return
-	# se nao estava rodando, comeca do zero com a velocidade atual
 	if not _rodando or _timer.is_stopped():
 		start(_timer.wait_time)
 		return

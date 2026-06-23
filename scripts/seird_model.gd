@@ -62,6 +62,7 @@ var adjacencia: Dictionary = {}
 var dia: int = 0
 var rng: RandomNumberGenerator
 
+
 var ovos_perdidos_hoje: float = 0.0
 var ovos_perdidos_total: float = 0.0
 var qtd_mortos: int = 0
@@ -76,10 +77,9 @@ var qtd_pico_infectados: int = 0
 var dia_ult_morte: int = -1
 
 signal step_completed(result: Dictionary)
-
 func initialize(params: Dictionary, dict_adjacencia: Dictionary) -> void:
 	rng = RandomNumberGenerator.new()
-	rng.seed = params.get("seed", 0)
+	rng.seed = params.get("seed", 32)
 
 	var nm_doenca = params.get("disease", "Newcastle")
 	var dados_doenca = DISEASE_PRESETS[nm_doenca]
@@ -91,29 +91,17 @@ func initialize(params: Dictionary, dict_adjacencia: Dictionary) -> void:
 	infect_min = dados_doenca["infect_min"]
 	infect_max = dados_doenca["infect_max"]
 	post_mortem_days = dados_doenca["post_mortem_days"]
-
-	preco_ovo = params.get("egg_price", 0.7)
-	preco_ave = params.get("bird_price", 30.0)
-
+	
 	adjacencia = dict_adjacencia
 	dia = 0
 	agentes.clear()
-	ovos_perdidos_hoje = 0.0
-	ovos_perdidos_total = 0.0
+
 	qtd_mortos = 0
-	prejuizo = 0.0
+
 	dia_prim_infectado = -1
-	dia_pico_infectados = -1
-	qtd_pico_infectados = 0
 	dia_ult_morte = -1
 
-	var qtde_agentes = params["num_agents"]
-	var qtde_femeas = params.get("num_females", int(qtde_agentes) * 0.7)
-	if qtde_femeas > qtde_agentes:
-		qtde_femeas = qtde_agentes
-	if qtde_femeas < 0:
-		qtde_femeas = 0
-	var cob_vacina = params.get("vac_coverage", 0.0)
+	var qtde_agentes = params.get("num_agents")
 
 	for i in range(qtde_agentes):
 		var ag = Agente.new()
@@ -125,18 +113,9 @@ func initialize(params: Dictionary, dict_adjacencia: Dictionary) -> void:
 		ag.viva = true
 		agentes.append(ag)
 
-	if cob_vacina > 0.0:
-		var qtde_vacinar = int(floor(cob_vacina * qtde_agentes))
-		var agentes_s = _get_agentes_by_state(Estado.S)
-		for i in range(min(qtde_vacinar, agentes_s.size())):
-			if agentes_s.is_empty():
-				break
-			var idx = rng.randi() % agentes_s.size()
-			agentes_s[idx].estado = Estado.R
-			agentes_s.remove_at(idx)
+	
 
 	var suscetiveis_rest = _get_agentes_by_state(Estado.S)
-	# se o chamador passou initial_infected em params, usa essa lista
 	var pre_definidos: Array = params.get("initial_infected", [])
 	if pre_definidos.size() > 0:
 		set_initial_infected(pre_definidos)
@@ -144,8 +123,7 @@ func initialize(params: Dictionary, dict_adjacencia: Dictionary) -> void:
 		var idx_p_zero = rng.randi() % suscetiveis_rest.size()
 		_expose_agent(suscetiveis_rest[idx_p_zero])
 
-# Define quais agentes (por id) iniciam infectados. So funciona em estado S.
-# Idempotente e seguro contra ids invalidos.
+
 func set_initial_infected(agent_ids: Array) -> void:
 	if agentes.is_empty():
 		return
@@ -181,25 +159,9 @@ func step() -> Dictionary:
 		if ag.estado == Estado.I:
 			infectados_atual += 1
 
-	if infectados_atual > qtd_pico_infectados:
-		qtd_pico_infectados = infectados_atual
-		dia_pico_infectados = dia
 
-	var prod_esperada: float = 0.0
-	var prod_real: float = 0.0
-	for ag in agentes:
-		if ag.eh_femea:
-			prod_esperada += ag.prod_ovos_dia
-			if ag.viva:
-				if ag.estado == Estado.S or ag.estado == Estado.E or ag.estado == Estado.R:
-					prod_real += ag.prod_ovos_dia
-				elif ag.estado == Estado.I:
-					prod_real += ag.prod_ovos_dia * 0.5
+	
 
-	var perda_hoje = prod_esperada - prod_real
-	ovos_perdidos_total += perda_hoje
-	ovos_perdidos_hoje = perda_hoje
-	prejuizo = (ovos_perdidos_total * preco_ovo) + (qtd_mortos * preco_ave)
 	dia += 1
 
 	var contagens = _count_states()
@@ -210,9 +172,7 @@ func step() -> Dictionary:
 		"recuperados": contagens.get("R", 0),
 		"mortos": contagens.get("D", 0),
 		"expostos": contagens.get("E", 0),
-		"ovos_perdidos_hoje": ovos_perdidos_hoje,
-		"ovos_perdidos_total": ovos_perdidos_total,
-		"prejuizo": prejuizo
+
 	}
 
 	step_completed.emit(resultado)
@@ -225,38 +185,6 @@ func _get_agentes_by_state(estado: Estado) -> Array:
 		if ag.estado == estado:
 			encontrados.append(ag)
 	return encontrados
-
-func vaccinate(fracao: float) -> void:
-	if fracao <= 0.0:
-		return
-	var candidatos = _get_agentes_by_state(Estado.S)
-	if candidatos.is_empty():
-		return
-	var qtd_vacinar: int = int(candidatos.size() * fracao)
-	if qtd_vacinar <= 0:
-		qtd_vacinar = 1
-	qtd_vacinar = min(qtd_vacinar, candidatos.size())
-	candidatos.shuffle()
-	for i in range(qtd_vacinar):
-		candidatos[i].estado = Estado.R
-
-func isolate_infectious() -> void:
-	var infectados = _get_agentes_by_state(Estado.I)
-	var infectados_ids: Array = []
-	for ag in infectados:
-		infectados_ids.append(ag.id)
-	for ag_id in adjacencia.keys():
-		if infectados_ids.has(ag_id):
-			# esvazia a lista de adjacência do agente isolado
-			adjacencia[ag_id].clear()
-			continue
-		var vizinhos_atuais = adjacencia.get(ag_id, [])
-		var novos_vizinhos: Array = []
-		for viz in vizinhos_atuais:
-			# remove o agente isolado das listas de adjacência dos outros nós
-			if not infectados_ids.has(viz.get("neighbor_id")):
-				novos_vizinhos.append(viz)
-		adjacencia[ag_id] = novos_vizinhos
 
 # contagem de agentes por estado
 func _count_states() -> Dictionary:
@@ -315,10 +243,6 @@ func get_summary() -> Dictionary:
 	return {
 		"total_aves": agentes.size(),
 		"qtd_mortos": qtd_mortos,
-		"prejuizo": prejuizo,
-		"ovos_perdidos_total": ovos_perdidos_total,
-		"dia_pico_infectados": dia_pico_infectados,
-		"qtd_pico_infectados": qtd_pico_infectados,
 		"dia_prim_infectado": dia_prim_infectado,
 		"dia_ult_morte": dia_ult_morte,
 		"dia_final": dia

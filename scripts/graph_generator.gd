@@ -26,7 +26,7 @@ func generate(num_nodes: int, layout: String) -> Dictionary:
 			_generate_single_pole(num_nodes, malha_adjacencia, coordenadas_nos)
 		"two_poles":
 			_generate_two_poles(num_nodes, malha_adjacencia, coordenadas_nos, rng)
-		"free_range", _:
+		"solto", _:
 			_generate_free_range(num_nodes, malha_adjacencia, coordenadas_nos, rng)
 	
 	_garantir_conectividade(num_nodes, malha_adjacencia, coordenadas_nos)
@@ -93,13 +93,9 @@ func _generate_free_range(n: int, adj: Dictionary, pos: Dictionary, rng: RandomN
 	for i in range(n):
 		pos[i] = Vector2(rng.randf()*LARGURA_GRID, rng.randf()*ALTURA_GRID)
 	for i in range(n):
-		for j in range(i+1, n):
-			var dist = pos[i].distance_to(pos[j])
-			
-			if dist < RAIO_CORTE_PADRAO and dist > 0.0:
-				var peso_calculado = clampf(RAIO_CORTE_PADRAO / dist, 0.0, 1.0)
-				adj[i].append({"neighbor_id": j})
-				adj[j].append({"neighbor_id": i})
+		for j in range(i+1, n):			
+			adj[i].append({"neighbor_id": j})
+			adj[j].append({"neighbor_id": i})
 
 # VALIDAÇÃO DE CONECTIVIDADE ---------------------------------------------------
 func _garantir_conectividade(n: int, adj: Dictionary, pos: Dictionary):
@@ -126,8 +122,6 @@ func _garantir_conectividade(n: int, adj: Dictionary, pos: Dictionary):
 					menor_distancia = dist
 					no_proximo = j
 			if no_proximo != -1:
-				var peso_conexo = 1.0
 				if menor_distancia > 0.0:
-					peso_conexo = clampf (RAIO_CORTE_PADRAO / menor_distancia, 0.0, 1.0)
 					adj[i].append({"neighbor_id": no_proximo})
 					adj[no_proximo].append({"neighbor_id": i})
